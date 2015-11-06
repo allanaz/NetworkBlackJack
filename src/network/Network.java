@@ -39,6 +39,7 @@ public class Network extends JFrame implements Runnable
     boolean jWin =false;
     boolean gBust=false;
     boolean jBust=false;
+    boolean yes = true;
     /////////////////////////////////////////////////////////
     
     /**
