@@ -121,12 +121,17 @@ public class Network extends JFrame implements Runnable
                 {
 				if (isClient)
                                 {
-                                    int hitCardIndex=0;
                                         if(e.getKeyCode()==KeyEvent.VK_D)
                                             {
                                                 if(!james.getInGame())
                                                 {
-                                                james.dealMeIn();
+                                                int hitCardIndex=0;
+                                                int hitCardIndex2=0;
+//                                                james.dealMeIn();
+                                                hitCardIndex=james.hit();
+                                                hitCardIndex2=james.hit();
+                                                System.out.println("sending from client");
+                                                ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
                                                 if(james.getHandValue()==21)
                                                             jWin=true;
@@ -138,24 +143,31 @@ public class Network extends JFrame implements Runnable
                                             }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
                                             {
+                                                int hitCardIndex=0;
                                                 hitCardIndex=james.hit();
+                                                System.out.println("sending from client");
+                                                ClientHandler.sendPieceMove(hitCardIndex);
                                                 if(james.getHandValue()==21)
                                                             jWin=true;
                                                 else if(james.getHandValue()>21)
                                                             jBust=true;
                                             }
-                                    System.out.println("sending from client");
-					ClientHandler.sendPieceMove(hitCardIndex);
+                                    
                                         
                                 }
 				else
                                 {
-                                    int hitCardIndex=0;
                                     if(e.getKeyCode()==KeyEvent.VK_D)
                                             {
                                                 if(!goldfinger.getInGame())
                                                 {
-                                                goldfinger.dealMeIn();
+                                                int hitCardIndex=0;
+                                                int hitCardIndex2=0;
+                                                //goldfinger.dealMeIn();
+                                                hitCardIndex=goldfinger.hit();
+                                                hitCardIndex2=goldfinger.hit();
+                                                System.out.println("sending from client");
+                                                ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 goldfinger.setInGame(true);
                                                 if(goldfinger.getHandValue()==21)
                                                     gWin=true;
@@ -165,15 +177,17 @@ public class Network extends JFrame implements Runnable
                                             }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
                                             {
+                                                int hitCardIndex=0;
                                                 hitCardIndex=goldfinger.hit();
+                                                System.out.println("sending from server");
+                                   // serverValue++;
+					ServerHandler.sendPieceMove(hitCardIndex);
                                                 if(goldfinger.getHandValue()==21)
                                                     gWin=true;
                                                 else if(goldfinger.getHandValue()>21)
                                                     gBust=true;
                                             }
-                                    System.out.println("sending from server");
-                                   // serverValue++;
-					ServerHandler.sendPieceMove(hitCardIndex);
+                                    
                                         
                                 }			                    
                 }

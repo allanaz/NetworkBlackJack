@@ -70,6 +70,15 @@ public class ServerHandler
 			Network.myTurn = false;
 		}            
     }
+    public static void sendPieceMove(int val,int val2)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(val + ":" + val2);
+			Network.myTurn = false;
+		}            
+    }
 
 
     public static void sendDisconnect()
@@ -106,6 +115,8 @@ public class ServerHandler
                             int xpost = Integer.parseInt(inputLine.split(":")[1]);
                             //Network.clientValue=xpost;
                             Network.james.hand.add(Card.cards[xpost]);
+                            if(ypost!=-1)
+                                Network.james.hand.add(Card.cards[ypost]);
  
                             Network.myTurn = true;
                         }

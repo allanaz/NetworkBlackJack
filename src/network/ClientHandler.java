@@ -78,6 +78,15 @@ public class ClientHandler
 			Network.myTurn = false;
 		}        
     }
+    public static void sendPieceMove(int val,int val2)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(val2 + ":" + val);
+			Network.myTurn = false;
+		}        
+    }
 
 	public static void sendDisconnect()
 	{
@@ -115,6 +124,9 @@ public class ClientHandler
                                                         
                                                         //Network.serverValue=ypost;
                                                         Network.goldfinger.hand.add(Card.cards[ypost]);
+                                                        if(xpost!=-1)
+                                                            Network.goldfinger.hand.add(Card.cards[xpost]);
+
                                                         Network.myTurn = true;
 						}
 						catch (NumberFormatException e)
