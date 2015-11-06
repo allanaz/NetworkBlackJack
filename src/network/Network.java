@@ -22,8 +22,8 @@ public class Network extends JFrame implements Runnable
     public static final int XBORDER = 20;
     public static final int YBORDER = 20;
     public static final int YTITLE = 25;
-    public static final int WINDOW_WIDTH = 400;
-    public static final int WINDOW_HEIGHT = 400;
+    public static final int WINDOW_WIDTH = 1920;
+    public static final int WINDOW_HEIGHT = 1045;
     final public static int NUM_ROWS = 8;
     final public static int NUM_COLUMNS = 8;
     public static boolean animateFirstTime = true;
@@ -475,13 +475,12 @@ public class Network extends JFrame implements Runnable
         {
             if(temp!=null)
             {
-                        g.setColor(Color.red);
+                        
 
-            g.fill3DRect(300+index, 300, 50, 50, true);
+                
+        temp.drawCard(g,300 + index,300,10,10,temp.getValue(),temp.getSuite(),true);
 
-            g.setColor(Color.white);
-            g.drawString(temp.getValue()+"", 300+index, 350);
-            index+=60;
+            index+=170;
             }
         }
         g.setColor(Color.red);
@@ -502,13 +501,8 @@ public class Network extends JFrame implements Runnable
         {
             if(temp!=null)
             {
-                        g.setColor(Color.red);
-
-            g.fill3DRect(300+index2, 450, 50, 50, true);
-
-            g.setColor(Color.white);
-            g.drawString(temp.getValue()+"", 300+index2, 500);
-            index2+=60;
+           temp.drawCard(g,300 + index2,550,10,10,temp.getValue(),temp.getSuite(),true);
+            index2+=170;
             }
         }
         g.setColor(Color.red);
