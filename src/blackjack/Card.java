@@ -135,6 +135,12 @@ public class Card {
             
             
         }
+        else
+        {
+            g.setColor(Color.red);
+            g.fillRoundRect(0, 0, 15, 20,2,2);
+        }
+            
     	g.scale( 1.0/xscale,1.0/yscale );
     	g.translate(-xpos,-ypos);
 	}

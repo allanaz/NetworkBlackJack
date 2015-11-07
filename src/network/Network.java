@@ -307,6 +307,10 @@ public class Network extends JFrame implements Runnable
                         {
                             ipAddress += ".";
                         }
+                        else if (e.getKeyCode() == KeyEvent.VK_Q)
+                        {
+                            ipAddress = ipAddress.substring(0,ipAddress.length()-1);
+                        }
                     }
                 }
                 /////////////////////////////////////////////////////////
@@ -482,6 +486,7 @@ public class Network extends JFrame implements Runnable
 //add or modify.   
         /////////////////////////////////////////////////////////
         g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(james.getName(), 200, 250);
                         int index=0;
 
@@ -492,7 +497,7 @@ public class Network extends JFrame implements Runnable
                         
 
                 
-        temp.drawCard(g,300 + index,300,10,10,temp.getValue(),temp.getSuite(),true);
+        temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
 
             index+=170;
             }
@@ -501,13 +506,17 @@ public class Network extends JFrame implements Runnable
 
         if(jWin)
         {
-
-            g.drawString("Bond Wins", 600, 600);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Bond Wins", 600, 200);
         }
         if(jBust)
-            g.drawString("Bond Bust", 600, 650);
+        {
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Bond Bust", 600, 250);
+        }
         /////////////////////////////////////////////////////////
         g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(goldfinger.getName(), 200, 400);
                         int index2=0;
 
@@ -515,17 +524,21 @@ public class Network extends JFrame implements Runnable
         {
             if(temp!=null)
             {
-           temp.drawCard(g,300 + index2,550,10,10,temp.getValue(),temp.getSuite(),true);
+           temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
             index2+=170;
             }
         }
         g.setColor(Color.red);
         if(gWin)
         {
-            g.drawString("Goldfinger Wins", 600, 600);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Goldfinger Wins", 600, 220);
         }
         if(gBust)
-            g.drawString("Goldfinger Bust", 600, 700);
+        {
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Goldfinger Bust", 600, 270);
+        }
         /////////////////////////////////////////////////////////
         if (!gameStarted)
         {
