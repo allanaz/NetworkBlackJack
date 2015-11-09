@@ -481,18 +481,20 @@ public class Network extends JFrame implements Runnable
         
         
         // far outer border
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.fillRect(0, 0, xsize, ysize);
         // ----------------
 
         // background
       
-        g.setColor(Color.white);
+        g.setColor(Color.black);
         g.fillPolygon(x, y, 4);
         
         
 //add or modify.   
         /////////////////////////////////////////////////////////
+        if(gameStarted)
+        {
         g.setColor(Color.red);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(james.getName(), 200, 250);
@@ -547,52 +549,58 @@ public class Network extends JFrame implements Runnable
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
             g.drawString("Goldfinger Bust", 600, 270);
         }
+        }
         /////////////////////////////////////////////////////////
         if (!gameStarted)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("Not Connected",100,150);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 100));
+            g.setColor(Color.white);
+            g.drawString("Not Connected",getX(100),getY(500));
             
         }
         else if (isClient)
         {
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
+            g.setColor(Color.white);
             g.drawString("The Client",100,150);
         }
         else
         {
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
+            g.setColor(Color.white);
             g.drawString("The Server",100,150);
         }            
 
 
+//        {
+//            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+//            g.setColor(Color.black);
+//            g.drawString("Client value " + clientValue,100,200);
+//        }
+//
+//        {
+//            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+//            g.setColor(Color.black);
+//            g.drawString("Server value " + serverValue,100,300);
+//            
+//        }
+        if(!gameStarted)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("Client value " + clientValue,100,200);
-        }
-
-        {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("Server value " + serverValue,100,300);
+            g.setFont(new Font("Impact",Font.BOLD,200));
+            g.drawString("Blackjack", getX(100), getY(200));
             
-        }
-        
             try
             {
                 g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-                g.setColor(Color.black);
-                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(10), getY(20));
-                g.drawString("Enter IP address: " + ipAddress, getX(10), getY(60));
+                g.setColor(Color.white);
+                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(100), getY(250));
+                g.drawString("Enter IP address: " + ipAddress, getX(100), getY(300));
             }
             catch (UnknownHostException e)
             {
                 e.printStackTrace();
             }
+        }
                     
         // put all paint commands above this line
         gOld.drawImage(image, 0, 0, null);
