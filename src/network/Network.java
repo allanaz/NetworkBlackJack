@@ -52,6 +52,7 @@ public class Network extends JFrame implements Runnable
     public static int clientValue = 0;
     
     String ipAddress = new String();
+    
     /**
      * Variables to do with main menu
      */
@@ -133,10 +134,7 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
-                                                if(james.getHandValue()==21)
-                                                            jWin=true;
-                                                else if(james.getHandValue()>21)
-                                                            jBust=true;
+                                                
                                                 }
                                                 
                                                 
@@ -147,10 +145,10 @@ public class Network extends JFrame implements Runnable
                                                 hitCardIndex=james.hit();
                                                 System.out.println("sending from client");
                                                 ClientHandler.sendPieceMove(hitCardIndex);
-                                                if(james.getHandValue()==21)
-                                                            jWin=true;
-                                                else if(james.getHandValue()>21)
-                                                            jBust=true;
+//                                                if(james.getHandValue()==21)
+//                                                            jWin=true;
+//                                                else if(james.getHandValue()>21)
+//                                                            jBust=true;
                                             }
                                     
                                         
@@ -169,10 +167,7 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 goldfinger.setInGame(true);
-                                                if(goldfinger.getHandValue()==21)
-                                                    gWin=true;
-                                                else if(goldfinger.getHandValue()>21)
-                                                    gBust=true;
+                                                
                                                 }
                                             }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
@@ -182,14 +177,15 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from server");
                                    // serverValue++;
 					ServerHandler.sendPieceMove(hitCardIndex);
-                                                if(goldfinger.getHandValue()==21)
-                                                    gWin=true;
-                                                else if(goldfinger.getHandValue()>21)
-                                                    gBust=true;
+//                                                if(goldfinger.getHandValue()==21)
+//                                                    gWin=true;
+//                                                else if(goldfinger.getHandValue()>21)
+//                                                    gBust=true;
                                             }
                                     
                                         
-                                }			                    
+                                }
+                                
                 }
                 ///////////////////////////////////////////////////////
                 else if (myTurn && gameStarted && e.getKeyCode() == KeyEvent.VK_2)
@@ -207,7 +203,8 @@ public class Network extends JFrame implements Runnable
 					ServerHandler.sendPieceMove(serverValue);
                                 }	
 			                    
-                }                
+                }
+                
                 else if (e.getKeyCode() == KeyEvent.VK_S)
                 {
                     if (!isConnecting)
@@ -310,6 +307,17 @@ public class Network extends JFrame implements Runnable
                         else if (e.getKeyCode() == KeyEvent.VK_Q)
                         {
                             ipAddress = ipAddress.substring(0,ipAddress.length()-1);
+                        }
+                        else if(e.getKeyCode()==KeyEvent.VK_I)
+                        {
+                            try
+                            {
+                            ipAddress=InetAddress.getLocalHost().getHostAddress();
+                            }
+                            catch (UnknownHostException a)
+                            {
+                                a.printStackTrace();
+                            }
                         }
                     }
                 }
@@ -627,6 +635,14 @@ public class Network extends JFrame implements Runnable
 
             reset();
         }
+        if(james.getHandValue()==21)
+                    jWin=true;
+        else if(james.getHandValue()>21)
+                    jBust=true;
+        if(goldfinger.getHandValue()==21)
+            gWin=true;
+        else if(goldfinger.getHandValue()>21)
+            gBust=true;
         
         
     }
