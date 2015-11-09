@@ -8,7 +8,7 @@ public class Card {
     public static Card cards[]= new Card[52];
     
     private int value;
-    public enum Suite {HEARTS,DIAMONDS,SPADES,CLUBS}
+    public enum Suite {HEARTS,DIAMONDS,SPADES,CLUBS,SPECIAL}
     private Suite suite;
     private boolean inPlay;
     private boolean faceUp;
@@ -21,6 +21,10 @@ public class Card {
         inPlay=false;
         faceUp=false;
         thePlayer=null;
+    }
+    public void doEffect(Player _player, Player _player2)
+    {
+        
     }
     public boolean addPlayer(Player _player)
     {

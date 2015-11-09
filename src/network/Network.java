@@ -41,7 +41,8 @@ public class Network extends JFrame implements Runnable
     boolean jBust=false;
     boolean yes = true;
     /////////////////////////////////////////////////////////
-    
+    boolean showRules=true;
+    Image table;
     /**
      * Variables to do with gameplay
      */
@@ -308,6 +309,17 @@ public class Network extends JFrame implements Runnable
                         {
                             ipAddress = ipAddress.substring(0,ipAddress.length()-1);
                         }
+                        else if(e.VK_SPACE == e.getKeyCode()) {
+                            	if(showRules==true)
+                            	{
+                                	showRules=false;
+                            	}
+                            	else
+                            	{
+                                	showRules=true;
+                            	}
+                        	}
+
                         else if(e.getKeyCode()==KeyEvent.VK_I)
                         {
                             try
@@ -490,7 +502,7 @@ public class Network extends JFrame implements Runnable
         g.setColor(Color.white);
         g.fillPolygon(x, y, 4);
         
-        
+        g.drawImage(table,getX(0),getY(0),getWidth2(),getHeight2(),this);
 //add or modify.   
         /////////////////////////////////////////////////////////
         g.setColor(Color.red);
@@ -581,7 +593,40 @@ public class Network extends JFrame implements Runnable
             g.drawString("Server value " + serverValue,100,300);
             
         }
-        
+        //shows rules
+    	if(showRules==true)
+    	{
+        	g.setColor(Color.black);
+       	g.fillRect(getX(getWidth2()/3-3),getY(0),getWidth2()/3,getHeight2()/2+5);
+       	
+       	g.setColor(Color.white);
+    	g.setFont(new Font("Impact",Font.BOLD,50));
+    	
+    	g.drawString("Blackjack", getX(getWidth2()/3+170),getY(40));
+    	
+    	g.setFont(new Font("Impact",Font.BOLD,20));
+     	
+    	g.drawString("1.Each player will start out with $1000.", getX(getWidth2()/3),getY(65));
+    	g.drawString("2.At the start of each round each player will put a $10 in the pot. ", getX(getWidth2()/3),getY(90));
+    	g.drawString("4.At the start of each round each player is given 2 random cards.", getX(getWidth2()/3),getY(115));
+    	g.drawString("5.The player will add the values of the cards. The value is the number", getX(getWidth2()/3),getY(140));
+    	g.drawString("indicated on the card. The king, queen, jack cards are are all worth", getX(getWidth2()/3),getY(165));
+    	g.drawString("10 points and the ace is worth 11 or 1 points.", getX(getWidth2()/3),getY(190));
+    	g.drawString("6.To get the money you want to be as close to 21 without going over", getX(getWidth2()/3),getY(215));
+    	g.drawString("7.Before getting more cards a player can choose to raise", getX(getWidth2()/3),getY(240));
+    	g.drawString(" the amount each player has in the pot.", getX(getWidth2()/3),getY(265));
+    	g.drawString("8.To stay in you have to raise your amount of money in the pot.", getX(getWidth2()/3),getY(290));
+    	g.drawString("9.On your turn you can choose to get another card which will add the ", getX(getWidth2()/3),getY(315));
+    	g.drawString("corresponding amount of points. You can keep adding cards until your ", getX(getWidth2()/3),getY(340));
+    	g.drawString("turn is over 21 or you decide to stop.", getX(getWidth2()/3),getY(365));
+    	g.drawString("10.There are special cards that you can do which will help you/harm ", getX(getWidth2()/3),getY(390));
+    	g.drawString("the other player or will help the other player.", getX(getWidth2()/3),getY(415));
+    	g.drawString("11.Who ever is the closest to 21 without going over wins all", getX(getWidth2()/3),getY(440));
+    	g.drawString("the other players bets.", getX(getWidth2()/3),getY(465));
+    	g.drawString("12.To win you have to have the most money out of all the players.", getX(getWidth2()/3),getY(490));
+    	
+    	}
+
             try
             {
                 g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
@@ -632,6 +677,7 @@ public class Network extends JFrame implements Runnable
                 xsize = getSize().width;
                 ysize = getSize().height;
             }
+            table = Toolkit.getDefaultToolkit().getImage("./table.PNG");
 
             reset();
         }
