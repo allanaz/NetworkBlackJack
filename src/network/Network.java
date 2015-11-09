@@ -527,7 +527,7 @@ public class Network extends JFrame implements Runnable
         /////////////////////////////////////////////////////////
         g.setColor(Color.red);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(goldfinger.getName(), 200, 400);
+        g.drawString(goldfinger.getName(), 200, 600);
                         int index2=0;
 
         for(Card temp: goldfinger.hand)
@@ -553,22 +553,22 @@ public class Network extends JFrame implements Runnable
         /////////////////////////////////////////////////////////
         if (!gameStarted)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 100));
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 50));
             g.setColor(Color.white);
-            g.drawString("Not Connected",getX(100),getY(500));
+            g.drawString("Not Connected",getX(800),getY(600));
             
         }
         else if (isClient)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 40));
             g.setColor(Color.white);
-            g.drawString("The Client",100,150);
+            g.drawString("The Client",getX(0),getY(40));
         }
         else
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 40));
             g.setColor(Color.white);
-            g.drawString("The Server",100,150);
+            g.drawString("The Server",getX(0),getY(40));
         }            
 
 
@@ -586,15 +586,15 @@ public class Network extends JFrame implements Runnable
 //        }
         if(!gameStarted)
         {
-            g.setFont(new Font("Impact",Font.BOLD,200));
-            g.drawString("Blackjack", getX(100), getY(200));
+            g.setFont(new Font("Bodoni MT",Font.BOLD,200));
+            g.drawString("BLACKJACK", getX(400), getY(500));
             
             try
             {
                 g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
                 g.setColor(Color.white);
-                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(100), getY(250));
-                g.drawString("Enter IP address: " + ipAddress, getX(100), getY(300));
+                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(5), getY(975));
+                g.drawString("Enter IP address: " + ipAddress, getX(300), getY(975));
             }
             catch (UnknownHostException e)
             {

@@ -77,7 +77,7 @@ public class Card {
         {
         if(suite == Suite.HEARTS || suite == Suite.DIAMONDS)
         {
-            g.setColor(Color.red);
+            g.setColor(Color.white);
             g.fillRoundRect(0, 0, 15, 20,2,2);
             g.setColor(Color.black);
             
@@ -92,7 +92,7 @@ public class Card {
         }
     	
        
-        g.setColor(Color.white);
+        g.setColor(Color.red);
             if(suite == Suite.DIAMONDS)
             drawDiamond(g,7.5,6,45,.5,.5);
             else if(suite == Suite.HEARTS)
