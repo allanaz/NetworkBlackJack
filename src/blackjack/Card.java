@@ -84,7 +84,7 @@ public class Card {
         }
         else if(suite == Suite.SPADES || suite == Suite.CLUBS)
         {
-            g.setColor(Color.black);
+            g.setColor(Color.white);
             g.fillRoundRect(0, 0, 15, 20,2,2);
             g.setColor(Color.red);
            
@@ -97,10 +97,19 @@ public class Card {
             drawDiamond(g,7.5,6,45,.5,.5);
             else if(suite == Suite.HEARTS)
             drawHeart(g,7.5,11,180,.5,0.5);
+            
             else if(suite == Suite.SPADES)
+            {
+                        g.setColor(Color.black);
+
            drawSpade(g,7.5,8,0,.5,.5);
+            }
             else if(suite == Suite.CLUBS)
+            {        
+                g.setColor(Color.black);
+
          drawClub(g,7.5,12,180,.5,.5);
+            }
             g.setFont(new Font("Impact",Font.BOLD,6));
             if(value==10)
             {
