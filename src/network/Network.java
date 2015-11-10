@@ -499,7 +499,7 @@ public class Network extends JFrame implements Runnable
 
         // background
       
-        g.setColor(Color.white);
+       // g.setColor(Color.white);
         g.fillPolygon(x, y, 4);
         
         g.drawImage(table,getX(0),getY(0),getWidth2(),getHeight2(),this);
@@ -516,7 +516,9 @@ public class Network extends JFrame implements Runnable
             {
                         
 
-                
+          if(temp.getSuite()==Card.Suite.SPECIAL)
+                g.drawString("?", 300+index, 350);
+            else      
         temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
 
             index+=170;
@@ -544,6 +546,9 @@ public class Network extends JFrame implements Runnable
         {
             if(temp!=null)
             {
+                if(temp.getSuite()==Card.Suite.SPECIAL)
+                g.drawString("?", 300+index, 350);
+            else
            temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
             index2+=170;
             }
