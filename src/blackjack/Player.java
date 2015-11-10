@@ -67,7 +67,7 @@ public class Player {
          }
         
     }
-    public  int hit()
+    public  int hit(Player p2)
     {
         boolean hit=false;
         while (hit ==false)
@@ -78,6 +78,8 @@ public class Player {
                 System.out.println(Card.cards[randomCard]);
                 Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
+                
+                Card.doEffect(this,p2);
                 hit=true;
                 return randomCard;
              }
@@ -107,6 +109,10 @@ public class Player {
     public String getName()
     {
         return name;
+    }
+    public void setAmtMoney(int money)
+    {
+        amtMoney=money;
     }
     public int getAmtMoney()
     {

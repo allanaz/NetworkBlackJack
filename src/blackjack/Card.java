@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class Card {
-    public static Card cards[]= new Card[52];
+    public static Card cards[]= new Card[65];
     
     private int value;
     public enum Suite {HEARTS,DIAMONDS,SPADES,CLUBS,SPECIAL}
@@ -13,18 +13,56 @@ public class Card {
     private boolean inPlay;
     private boolean faceUp;
     private Player thePlayer;
+    private int effect;
     
-    Card(int _value, Suite _suite)
+    Card(int _value, Suite _suite,int _effect)
     {
         value=_value;
         suite=_suite;
         inPlay=false;
         faceUp=false;
         thePlayer=null;
+        effect=_effect;
     }
-    public void doEffect(Player _player, Player _player2)
+    public static void doEffect(Player _player, Player _player2)
     {
-        
+        for(Card temp: _player.hand)
+        {
+            if(temp!=null)
+            {
+                if(temp.getEffect()==0)
+                {
+                   _player.setAmtMoney(_player.getAmtMoney());
+                   _player2.setAmtMoney(_player2.getAmtMoney());
+                }
+                else if(temp.getEffect()==1)
+                {
+                   _player.setAmtMoney(_player.getAmtMoney()-200);
+                   _player2.setAmtMoney(_player2.getAmtMoney()-100);
+                }
+                else if(temp.getEffect()==2)
+                {
+                    _player.setAmtMoney(_player.getAmtMoney()+500);
+                   _player2.setAmtMoney(_player2.getAmtMoney());
+                }
+                else if(temp.getEffect()==3)
+                {
+                    _player.setAmtMoney(_player.getAmtMoney()+50);
+                   _player2.setAmtMoney(_player2.getAmtMoney()-100);
+                }
+                else if(temp.getEffect()==4)
+                {
+                    
+                    _player.setAmtMoney(_player.getAmtMoney()+(int)(Math.random()*300+50));
+                   _player2.setAmtMoney(_player2.getAmtMoney()+(int)(Math.random()*300+50));
+                }
+                
+            }
+        }
+    }
+    public int getEffect()
+    {
+        return effect;
     }
     public boolean addPlayer(Player _player)
     {
@@ -51,19 +89,20 @@ public class Card {
     
     public static boolean createDeck()
     {
-        for(int i=0;i<4;i++)
+        for(int i=0;i<5;i++)
         {
             for(int index=13*i;index<13*(i+1);index++)
             {
                 if(i==0)
-                cards[index] = new Card(index+1-13*i,Suite.HEARTS);
+                cards[index] = new Card(index+1-13*i,Suite.HEARTS,0);
                 else if(i==1)
-                cards[index] = new Card(index+1-13,Suite.SPADES);
+                cards[index] = new Card(index+1-13,Suite.SPADES,0);
                 else if(i==2)
-                cards[index] = new Card(index+1-13*i,Suite.DIAMONDS);
+                cards[index] = new Card(index+1-13*i,Suite.DIAMONDS,0);
                 else if(i==3)
-                cards[index] = new Card(index+1-13*i,Suite.CLUBS);
-                    
+                cards[index] = new Card(index+1-13*i,Suite.CLUBS,0);
+                    else if(i==4)
+                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,(int)(Math.random()*4+1));
             }
         }
         
