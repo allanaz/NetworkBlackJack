@@ -115,8 +115,13 @@ public class ServerHandler
                             int xpost = Integer.parseInt(inputLine.split(":")[1]);
                             //Network.clientValue=xpost;
                             Network.james.hand.add(Card.cards[xpost]);
+                            Card.cards[xpost].setInPlay(true);
                             if(ypost!=-1)
+                            {
                                 Network.james.hand.add(Card.cards[ypost]);
+                            Card.cards[ypost].setInPlay(true);
+                            }
+                            
  
                             Network.myTurn = true;
                         }
