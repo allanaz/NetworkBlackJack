@@ -74,7 +74,7 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(-1 + ":" + val);
+			serverOut.println(-1 + ":" + val + ":" + 0);
 			Network.myTurn = false;
 		}        
     }
@@ -83,7 +83,16 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val2 + ":" + val);
+			serverOut.println(val2 + ":" + val + ":" + 0);
+			Network.myTurn = false;
+		}        
+    }
+    public static void sendPieceMove(int val,int val2,int val3)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(val2 + ":" + val + ":" + val3);
 			Network.myTurn = false;
 		}        
     }

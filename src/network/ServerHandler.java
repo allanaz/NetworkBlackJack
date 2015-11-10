@@ -113,7 +113,10 @@ public class ServerHandler
 //add or modify.                            
                             int ypost = Integer.parseInt(inputLine.split(":")[0]);
                             int xpost = Integer.parseInt(inputLine.split(":")[1]);
+                            int zpost = Integer.parseInt(inputLine.split(":")[2]);
                             //Network.clientValue=xpost;
+                            if(zpost==0)
+                            {
                             Network.james.hand.add(Card.cards[xpost]);
                             Card.cards[xpost].setInPlay(true);
                             if(ypost!=-1)
@@ -121,6 +124,15 @@ public class ServerHandler
                                 Network.james.hand.add(Card.cards[ypost]);
                             Card.cards[ypost].setInPlay(true);
                             }
+                            }
+                            if(zpost==-2)
+                            {
+                                Network.dealer.hand.add(Card.cards[xpost]);
+                                Card.cards[xpost].setInPlay(true);
+                                Network.dealer.hand.add(Card.cards[ypost]);
+                                Card.cards[ypost].setInPlay(true);
+                            }
+                            
                             
  
                             Network.myTurn = true;

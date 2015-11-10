@@ -35,6 +35,7 @@ public class Network extends JFrame implements Runnable
     /////////////////////////////////////////////////////////
     static Player james=new Player("James Bond",200);
     static Player goldfinger = new Player("Goldfinger",500);
+    static Player dealer = new Player("Dealer Yee",1000);
     boolean gWin=false;
     boolean jWin =false;
     boolean gBust=false;
@@ -134,6 +135,12 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
+                                                int dealerCardIndex=0;
+                                                int dealerCardIndex2=0;
+                                                dealerCardIndex=dealer.hit();
+                                                dealerCardIndex2=dealer.hit();
+                                                System.out.println("sending Dealer from client");
+                                                ClientHandler.sendPieceMove(dealerCardIndex,dealerCardIndex2,-2);
                                                 
                                                 }
                                                 
@@ -499,7 +506,9 @@ public class Network extends JFrame implements Runnable
         g.fillRect(getX(0), getY(getHeight2()*3/4), getWidth2(), getHeight2()/4);
         if(isClient)
         {
+        
         g.setColor(Color.red);
+        g.fillOval(getX(5), getY(getHeight2()*7/8), getHeight2()/10, getHeight2()/10);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(james.getName(), getX(5), getY(getHeight2()*3/4+15));
         
@@ -562,6 +571,23 @@ public class Network extends JFrame implements Runnable
             index2+=65;
             }
         }
+        }
+        ///////////Display Dealer////////////
+        g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(dealer.getName(),getX(getWidth2()-40),200);
+        int index =0;
+        for(Card temp: dealer.hand)
+        {
+            if(temp!=null)
+            {
+                        
+
+                
+        temp.drawCard(g,getX(getWidth2()-50) ,210+ index,3,3,temp.getValue(),temp.getSuite(),isClient);
+
+            index+=65;
+            }
         }
         //////////win/bust/////////
         g.setColor(Color.red);
