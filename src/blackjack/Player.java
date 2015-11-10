@@ -67,7 +67,7 @@ public class Player {
          }
         
     }
-    public  int hit(Player p2)
+    public  int hit()
     {
         boolean hit=false;
         while (hit ==false)
@@ -79,7 +79,7 @@ public class Player {
                 Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
                 
-                Card.doEffect(this,p2);
+                
                 hit=true;
                 return randomCard;
              }

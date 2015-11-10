@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class Card {
-    public static Card cards[]= new Card[65];
+    public static Card cards[]= new Card[58];
     
     private int value;
     public enum Suite {HEARTS,DIAMONDS,SPADES,CLUBS,SPECIAL}
@@ -24,7 +24,7 @@ public class Card {
         thePlayer=null;
         effect=_effect;
     }
-    public static void doEffect(Player _player, Player _player2)
+    public void doEffect(Player _player, Player _player2)
     {
         for(Card temp: _player.hand)
         {
@@ -102,7 +102,10 @@ public class Card {
                 else if(i==3)
                 cards[index] = new Card(index+1-13*i,Suite.CLUBS,0);
                     else if(i==4)
+                    {
+                        if(index<7)
                 cards[index] = new Card(index+1-13*i,Suite.SPECIAL,(int)(Math.random()*4+1));
+                    }
             }
         }
         
