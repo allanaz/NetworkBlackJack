@@ -41,6 +41,7 @@ public class Player {
     public void setCardDoIt(Card _card)
     {
         hand.add(_card);
+        _card.setInPlay(true);
     }
     public void printCards()
     {
@@ -73,10 +74,10 @@ public class Player {
         while (hit ==false)
         {
              int randomCard=(int)(Math.random()*52);
-             if(!Card.cards[randomCard].getInPlay())
+             if(Card.cards[randomCard].getInPlay()==false)
              {
                 System.out.println(Card.cards[randomCard]);
-                Card.cards[randomCard].setInPlay(true);
+                //Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
                 hit=true;
                 return randomCard;

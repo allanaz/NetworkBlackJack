@@ -495,11 +495,15 @@ public class Network extends JFrame implements Runnable
         /////////////////////////////////////////////////////////
         if(gameStarted)
         {
+        g.setColor(Color.gray);
+        g.fillRect(getX(0), getY(getHeight2()*3/4), getWidth2(), getHeight2()/4);
+        if(isClient)
+        {
         g.setColor(Color.red);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(james.getName(), 200, 250);
-                        int index=0;
-
+        g.drawString(james.getName(), getX(5), getY(getHeight2()*3/4+15));
+        
+        int index=0;
         for(Card temp: james.hand)
         {
             if(temp!=null)
@@ -507,13 +511,60 @@ public class Network extends JFrame implements Runnable
                         
 
                 
-        temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
+        temp.drawCard(g,300 + index,getY(getHeight2()*13/16),5,5,temp.getValue(),temp.getSuite(),isClient);
 
-            index+=170;
+            index+=65;
+            }
+        }        
+        ////
+        g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(goldfinger.getName(), getX(5), 200);
+                        int index2=0;
+
+        for(Card temp: goldfinger.hand)
+        {
+            if(temp!=null)
+            {
+           temp.drawCard(g,getX(5) ,210+ index2,3,3,temp.getValue(),temp.getSuite(),!isClient);
+            index2+=65;
             }
         }
-        g.setColor(Color.red);
+        }
+        else
+        {
+            g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(james.getName(),getX(5),200);
+        int index=0;
+        for(Card temp: james.hand)
+        {
+            if(temp!=null)
+            {
+                        
 
+                
+        temp.drawCard(g,getX(5) ,210+ index,3,3,temp.getValue(),temp.getSuite(),isClient);
+
+            index+=65;
+            }
+        }        
+        ////
+        g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(goldfinger.getName(),getX(5), getY(getHeight2()*3/4+15));
+        int index2=0;
+        for(Card temp: goldfinger.hand)
+        {
+            if(temp!=null)
+            {
+           temp.drawCard(g,300 + index2,getY(getHeight2()*13/16),5,5,temp.getValue(),temp.getSuite(),!isClient);
+            index2+=65;
+            }
+        }
+        }
+        //////////win/bust/////////
+        g.setColor(Color.red);
         if(jWin)
         {
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
@@ -524,20 +575,7 @@ public class Network extends JFrame implements Runnable
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
             g.drawString("Bond Bust", 600, 250);
         }
-        /////////////////////////////////////////////////////////
-        g.setColor(Color.red);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(goldfinger.getName(), 200, 600);
-                        int index2=0;
-
-        for(Card temp: goldfinger.hand)
-        {
-            if(temp!=null)
-            {
-           temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
-            index2+=170;
-            }
-        }
+        /////////////////////////////////////////////////////////        
         g.setColor(Color.red);
         if(gWin)
         {
@@ -586,15 +624,20 @@ public class Network extends JFrame implements Runnable
 //        }
         if(!gameStarted)
         {
-            g.setFont(new Font("Bodoni MT",Font.BOLD,200));
-            g.drawString("BLACKJACK", getX(400), getY(500));
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            int fontSize = (int)(tk.getScreenSize().getHeight()/1080*200);
+            Font title = new Font("Bodoni MT",Font.BOLD,fontSize);
+            g.setFont(title);
+            FontMetrics fontMetrics = g.getFontMetrics(title);
+            int xPos= (int) (getWidth2()/2-(fontMetrics.stringWidth("BLACKJACK")/2));
+            g.drawString("BLACKJACK", getX(xPos), getY(getHeight2()/2));
             
             try
             {
                 g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
                 g.setColor(Color.white);
-                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(5), getY(975));
-                g.drawString("Enter IP address: " + ipAddress, getX(300), getY(975));
+                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(5), getY(getHeight2()-5));
+                g.drawString("Enter IP address: " + ipAddress, getX(305), getY(getHeight2()-5));
             }
             catch (UnknownHostException e)
             {

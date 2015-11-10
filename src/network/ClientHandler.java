@@ -124,8 +124,12 @@ public class ClientHandler
                                                         
                                                         //Network.serverValue=ypost;
                                                         Network.goldfinger.hand.add(Card.cards[ypost]);
+                                                        Card.cards[ypost].setInPlay(true);
                                                         if(xpost!=-1)
+                                                        {
                                                             Network.goldfinger.hand.add(Card.cards[xpost]);
+                                                        Card.cards[xpost].setInPlay(true);
+                                                        }
 
                                                         Network.myTurn = true;
 						}
