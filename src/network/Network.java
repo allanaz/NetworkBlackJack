@@ -41,6 +41,7 @@ public class Network extends JFrame implements Runnable
     boolean gBust=false;
     boolean jBust=false;
     boolean yes = true;
+    public static int thePot=0;
     /////////////////////////////////////////////////////////
     
     /**
@@ -133,14 +134,24 @@ public class Network extends JFrame implements Runnable
                                                 hitCardIndex=james.hit();
                                                 hitCardIndex2=james.hit();
                                                 System.out.println("sending from client");
-                                                ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
+                                                ClientHandler.sendDeal(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
+                                                
                                                 int dealerCardIndex=0;
                                                 int dealerCardIndex2=0;
                                                 dealerCardIndex=dealer.hit();
                                                 dealerCardIndex2=dealer.hit();
                                                 System.out.println("sending Dealer from client");
-                                                ClientHandler.sendPieceMove(dealerCardIndex,dealerCardIndex2,-2);
+                                                ClientHandler.sendDealerDeal(dealerCardIndex,dealerCardIndex2);
+                                                dealer.setInGame(true);
+                                                
+                                                int hitCardIndex3=0;
+                                                int hitCardIndex4=0;
+                                                hitCardIndex3=goldfinger.hit();
+                                                hitCardIndex4=goldfinger.hit();
+                                                System.out.println("sending from client");
+                                                ClientHandler.sendOtherPlayerDeal(hitCardIndex3,hitCardIndex4);
+                                                goldfinger.setInGame(true);
                                                 
                                                 }
                                                 
@@ -151,43 +162,56 @@ public class Network extends JFrame implements Runnable
                                                 int hitCardIndex=0;
                                                 hitCardIndex=james.hit();
                                                 System.out.println("sending from client");
-                                                ClientHandler.sendPieceMove(hitCardIndex);
+                                                ClientHandler.sendHit(hitCardIndex);
 //                                                if(james.getHandValue()==21)
 //                                                            jWin=true;
 //                                                else if(james.getHandValue()>21)
 //                                                            jBust=true;
+                                            }
+                                            if(e.getKeyCode()==KeyEvent.VK_B)
+                                            {
+                                                thePot+=2;
+                                                System.out.println("sending from client");
+                                                ClientHandler.sendBet(thePot);                                               
                                             }
                                     
                                         
                                 }
 				else
                                 {
-                                    if(e.getKeyCode()==KeyEvent.VK_D)
-                                            {
-                                                if(!goldfinger.getInGame())
-                                                {
-                                                int hitCardIndex=0;
-                                                int hitCardIndex2=0;
-                                                //goldfinger.dealMeIn();
-                                                hitCardIndex=goldfinger.hit();
-                                                hitCardIndex2=goldfinger.hit();
-                                                System.out.println("sending from client");
-                                                ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
-                                                goldfinger.setInGame(true);
-                                                
-                                                }
-                                            }
+//                                    if(e.getKeyCode()==KeyEvent.VK_D)
+//                                            {
+//                                                if(!goldfinger.getInGame())
+//                                                {
+//                                                int hitCardIndex=0;
+//                                                int hitCardIndex2=0;
+//                                                //goldfinger.dealMeIn();
+//                                                hitCardIndex=goldfinger.hit();
+//                                                hitCardIndex2=goldfinger.hit();
+//                                                System.out.println("sending from client");
+//                                                ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
+//                                                goldfinger.setInGame(true);
+//                                                
+//                                                }
+//                                            }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
                                             {
                                                 int hitCardIndex=0;
                                                 hitCardIndex=goldfinger.hit();
                                                 System.out.println("sending from server");
                                    // serverValue++;
-					ServerHandler.sendPieceMove(hitCardIndex);
+					ServerHandler.sendHit(hitCardIndex);
 //                                                if(goldfinger.getHandValue()==21)
 //                                                    gWin=true;
 //                                                else if(goldfinger.getHandValue()>21)
 //                                                    gBust=true;
+                                            }
+                                            if(e.getKeyCode()==KeyEvent.VK_B)
+                                            {
+                                                thePot+=2;
+                                                System.out.println("sending from server");
+                                                //ServerHandler.sendPieceMove(-3,thePot);
+                                                ServerHandler.sendBet(thePot);
                                             }
                                     
                                         
@@ -195,22 +219,22 @@ public class Network extends JFrame implements Runnable
                                 
                 }
                 ///////////////////////////////////////////////////////
-                else if (myTurn && gameStarted && e.getKeyCode() == KeyEvent.VK_2)
-                {
-			if (isClient)
-                                {
-                                    System.out.println("sending from client");
-                                    clientValue+=2;
-					ClientHandler.sendPieceMove(clientValue);
-                                }
-				else
-                                {
-                                    System.out.println("sending from server");
-                                    serverValue+=2;
-					ServerHandler.sendPieceMove(serverValue);
-                                }	
-			                    
-                }
+//                else if (myTurn && gameStarted && e.getKeyCode() == KeyEvent.VK_B)
+//                {
+//			if (isClient)
+//                                {
+//                                    System.out.println("sending from client");
+//                                    thePot+=2;
+//					ClientHandler.sendPieceMove(thePot,-3);
+//                                }
+//				else
+//                                {
+//                                    System.out.println("sending from server");
+//                                    thePot+=2;
+//					ServerHandler.sendPieceMove(-3,thePot);
+//                                }	
+//			                    
+//                }
                 
                 else if (e.getKeyCode() == KeyEvent.VK_S)
                 {
@@ -575,20 +599,25 @@ public class Network extends JFrame implements Runnable
         ///////////Display Dealer////////////
         g.setColor(Color.red);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(dealer.getName(),getX(getWidth2()-40),200);
+        g.drawString(dealer.getName(),getX(getWidth2()-100),200);
         int index =0;
         for(Card temp: dealer.hand)
         {
+            boolean faceUp=true;
             if(temp!=null)
             {
-                        
+                        if(index==0)
+                            faceUp=false;
 
                 
-        temp.drawCard(g,getX(getWidth2()-50) ,210+ index,3,3,temp.getValue(),temp.getSuite(),isClient);
+        temp.drawCard(g,getX(getWidth2()-50) ,210+ index,3,3,temp.getValue(),temp.getSuite(),faceUp);
 
             index+=65;
             }
         }
+        g.setColor(Color.red);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString("The Pot: "+thePot,getX(getWidth2()-getWidth2()/2),200);
         //////////win/bust/////////
         g.setColor(Color.red);
         if(jWin)
