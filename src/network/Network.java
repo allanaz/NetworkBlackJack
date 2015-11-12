@@ -135,11 +135,11 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
-<<<<<<< HEAD
-                                                 for(Card temp: james.hand)
-=======
+
+                                                 
+
                                                 for(Card temp: james.hand)
->>>>>>> origin/menu/special-cards
+
                                                         {
                                                             if(temp!=null)
                                                             {
@@ -149,10 +149,9 @@ public class Network extends JFrame implements Runnable
                                                                 }
                                                             }
                                                         }
-<<<<<<< HEAD
 
-=======
->>>>>>> origin/menu/special-cards
+
+
                                                 }
                                                 
                                                 
@@ -160,7 +159,7 @@ public class Network extends JFrame implements Runnable
                                             if(e.getKeyCode()==KeyEvent.VK_H)
                                             {
                                                 int hitCardIndex=0;
-                                                hitCardIndex=james.hit(goldfinger);
+                                                hitCardIndex=james.hit();
                                                 System.out.println("sending from client");
                                                 ClientHandler.sendPieceMove(hitCardIndex);
 //                                                if(james.getHandValue()==21)
@@ -190,8 +189,8 @@ public class Network extends JFrame implements Runnable
                                                 int hitCardIndex=0;
                                                 int hitCardIndex2=0;
                                                 //goldfinger.dealMeIn();
-                                                hitCardIndex=goldfinger.hit(james);
-                                                hitCardIndex2=goldfinger.hit(james);
+                                                hitCardIndex=goldfinger.hit();
+                                                hitCardIndex2=goldfinger.hit();
                                                 System.out.println("sending from client");
                                                 ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 goldfinger.setInGame(true);
@@ -210,7 +209,7 @@ public class Network extends JFrame implements Runnable
                                             if(e.getKeyCode()==KeyEvent.VK_H)
                                             {
                                                 int hitCardIndex=0;
-                                                hitCardIndex=goldfinger.hit(james);
+                                                hitCardIndex=goldfinger.hit();
                                                 System.out.println("sending from server");
                                    // serverValue++;
 					ServerHandler.sendPieceMove(hitCardIndex);
@@ -415,7 +414,7 @@ public class Network extends JFrame implements Runnable
                         }
                         if(e.getKeyCode()==KeyEvent.VK_J)
                         {
-                            goldfinger.hit(james);
+                            goldfinger.hit();
                             if(goldfinger.getHandValue()==21)
                                 gWin=true;
                             else if(goldfinger.getHandValue()>21)
@@ -562,17 +561,16 @@ public class Network extends JFrame implements Runnable
             {
                         
 
-<<<<<<< HEAD
+
           if(temp.getSuite()==Card.Suite.SPECIAL)
                 g.drawString("?", 300+index, 350);
             else      
-=======
+
                 if(temp.getSuite()==Card.Suite.SPECIAL)
                 {
                     g.fillRect(300 + index,300,5,5);
                 }
                     else
->>>>>>> origin/menu/special-cards
         temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
 
             index+=170;
@@ -601,15 +599,12 @@ public class Network extends JFrame implements Runnable
             if(temp!=null)
             {
                 if(temp.getSuite()==Card.Suite.SPECIAL)
-<<<<<<< HEAD
                 g.drawString("?", 300+index, 350);
             else
-=======
                 {
                     g.fillRect(300 + index,300,5,5);
                 }
-                else
->>>>>>> origin/menu/special-cards
+               
            temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
             index2+=170;
             }

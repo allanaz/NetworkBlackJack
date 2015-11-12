@@ -79,16 +79,57 @@ public class Player {
                 Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
                 
-<<<<<<< HEAD
-=======
-                
->>>>>>> origin/menu/special-cards
                 hit=true;
                 
                 return randomCard;
              }
         }
          return 55;
+        
+    }
+    public int getPlayerCard()
+    {
+        boolean hit=false;
+        while (hit ==false)
+        {
+             int randomCard=(int)(Math.random()*52);
+             
+             if(Card.cards[randomCard].getInPlay())
+             {
+                 if(this.hand.contains(Card.cards[randomCard]))
+                 {
+                    System.out.println(Card.cards[randomCard]);
+                    Card.cards[randomCard].setInPlay(false);
+                    addCard(Card.cards[randomCard]);
+
+                    hit=true;
+
+                    return randomCard;
+                 }
+             }
+             
+        }
+        return 12;
+    }
+    public void setPlayerCard(int c)
+    {
+        boolean hit=false;
+        while (hit ==false)
+        {
+             //int randomCard=(int)(Math.random()*52);
+             
+             if(!Card.cards[c].getInPlay())
+             {
+                System.out.println(Card.cards[c]);
+                Card.cards[c].setInPlay(true);
+                addCard(Card.cards[c]);
+                
+                hit=true;
+                
+                
+             }
+             
+        }
         
     }
     public int getHandValue()
@@ -121,10 +162,6 @@ public class Player {
     public int getAmtMoney()
     {
         return amtMoney;
-    }
-    public void setAmtMoney(int _money)
-    {
-        amtMoney=_money;
     }
     public Card getCard(int index)
     {

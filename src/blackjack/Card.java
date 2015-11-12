@@ -52,9 +52,17 @@ public class Card {
                 }
                 else if(temp.getEffect()==4)
                 {
-                    
-                    _player.setAmtMoney(_player.getAmtMoney()+(int)(Math.random()*300+50));
-                   _player2.setAmtMoney(_player2.getAmtMoney()+(int)(Math.random()*300+50));
+                    Card c;
+//                    for(Card t: _player2.hand)
+//                    {
+//                        if(temp!=null)
+//                        {
+//                           
+//                        }
+//                    }
+                    int pc;
+                    pc=_player2.getPlayerCard();
+                    _player.setPlayerCard(pc);
                 }
                 
             }
