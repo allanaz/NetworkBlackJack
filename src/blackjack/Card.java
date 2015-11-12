@@ -5,7 +5,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 
 public class Card {
-    public static Card cards[]= new Card[65];
+    public static Card cards[]= new Card[58];
     
     private int value;
     public enum Suite {HEARTS,DIAMONDS,SPADES,CLUBS,SPECIAL}
@@ -14,6 +14,7 @@ public class Card {
     private boolean faceUp;
     private Player thePlayer;
     private int effect;
+    
     Card(int _value, Suite _suite,int _effect)
     {
         value=_value;
@@ -23,38 +24,45 @@ public class Card {
         thePlayer=null;
         effect=_effect;
     }
-    public void doEffect(Player _player,Player _player2 )
+    public void doEffect(Player _player, Player _player2)
     {
-         for(Card temp: _player.hand)
+        for(Card temp: _player.hand)
         {
             if(temp!=null)
             {
                 if(temp.getEffect()==0)
                 {
-                    _player.setAmtMoney(_player.getAmtMoney());
+                   _player.setAmtMoney(_player.getAmtMoney());
+                   _player2.setAmtMoney(_player2.getAmtMoney());
                 }
                 else if(temp.getEffect()==1)
                 {
-                    _player.setAmtMoney(_player.getAmtMoney()-200);
+                   _player.setAmtMoney(_player.getAmtMoney()-200);
+                   _player2.setAmtMoney(_player2.getAmtMoney()-100);
                 }
                 else if(temp.getEffect()==2)
                 {
-                    _player.setAmtMoney(_player.getAmtMoney()-200);
+                    _player.setAmtMoney(_player.getAmtMoney()+500);
+                   _player2.setAmtMoney(_player2.getAmtMoney());
                 }
                 else if(temp.getEffect()==3)
                 {
-                    _player.setAmtMoney(_player.getAmtMoney()-200);
+                    _player.setAmtMoney(_player.getAmtMoney()+50);
+                   _player2.setAmtMoney(_player2.getAmtMoney()-100);
                 }
                 else if(temp.getEffect()==4)
                 {
-                    _player.setAmtMoney(_player.getAmtMoney()-200);
+                    
+                    _player.setAmtMoney(_player.getAmtMoney()+(int)(Math.random()*300+50));
+                   _player2.setAmtMoney(_player2.getAmtMoney()+(int)(Math.random()*300+50));
                 }
-                else if(temp.getEffect()==5)
-                {
-                    _player.setAmtMoney(_player.getAmtMoney()-200);
-                }
+                
             }
         }
+    }
+    public int getEffect()
+    {
+        return effect;
     }
     public boolean addPlayer(Player _player)
     {
@@ -93,11 +101,11 @@ public class Card {
                 cards[index] = new Card(index+1-13*i,Suite.DIAMONDS,0);
                 else if(i==3)
                 cards[index] = new Card(index+1-13*i,Suite.CLUBS,0);
-                 else if(i==4)
-                 {
-                     if(index<=6)
-                    cards[index] = new Card(0,Suite.SPECIAL,(int)((Math.random()*5)+1));   
-                 }
+                    else if(i==4)
+                    {
+                        if(index<7)
+                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,(int)(Math.random()*4+1));
+                    }
             }
         }
         
@@ -250,10 +258,6 @@ public class Card {
     {
         return value;
     }
-    public int getEffect()
-    {
-        return effect;
-    }
     public Suite getSuite()
     {
         return suite;
@@ -270,5 +274,4 @@ public class Card {
     {
         return(value +""+ suite);
     }
-    
 }
