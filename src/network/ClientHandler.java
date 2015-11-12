@@ -83,6 +83,14 @@ public class ClientHandler
         if(connected)
         {
             serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1);
+            Network.myTurn=false;
+        }
+    }
+    public static void sendDealerStand()
+    {
+        if(connected)
+        {
+            serverOut.println(-1 + ":" + -1 + ":" + 0 +":"+-1 + ":" + 1);
         }
     }
     public static void sendHit(int val)
@@ -92,7 +100,7 @@ public class ClientHandler
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
                     serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1 );
-			Network.myTurn = false;
+			//Network.myTurn = false;
 		}        
     }
     public static void sendDealerHit(int val)
@@ -102,7 +110,7 @@ public class ClientHandler
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
                     serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1 );
-			Network.myTurn = false;
+			//Network.myTurn = false;
 		}        
     }
     public static void sendBet(int val)
@@ -121,7 +129,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1);
-			Network.myTurn = false;
+			//Network.myTurn = false;
 		}        
     }
     public static void sendDealerDeal(int val,int val2)
@@ -130,7 +138,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1);
-			Network.myTurn = false;
+			//Network.myTurn = false;
 		}        
     }
     public static void sendOtherPlayerDeal(int val,int val2)
@@ -139,7 +147,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1);
-			Network.myTurn = false;
+			//Network.myTurn = false;
 		}        
     }
     public static void sendPieceMove(int val,int val2,int val3)
@@ -241,11 +249,12 @@ public class ClientHandler
                                                             if(vpost==-1)
                                                             {
                                                             Network.thePot=wpost;
-                                                            //Network.myTurn = true;
+                                                            Network.myTurn = true;
                                                             }
                                                             if(vpost==1)
                                                             {
-                                                                //Network.myTurn = true;
+                                                                Network.myTurn = true;
+                                                                Network.goldfinger.setStanding(true);
                                                             }
                                                             
                                                         }
@@ -266,7 +275,7 @@ public class ClientHandler
 //                                                            Network.thePot=xpost;
 //                                                        }
 
-                                                        Network.myTurn = true;
+                                                        //Network.myTurn = true;
 						}
 						catch (NumberFormatException e)
 						{

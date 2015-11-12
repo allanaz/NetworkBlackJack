@@ -10,6 +10,7 @@ public class Player {
     public enum winState {UNDER,TWENTYONE,BUST}
     private winState status;
     private boolean inGame;
+    private boolean standing;
      
     public Player(String _name,int _money)
     {
@@ -124,6 +125,14 @@ public class Player {
     public void setInGame(boolean _inGame)
     {
         inGame=_inGame;
+    }
+    public void setStanding(boolean _stand)
+    {
+        standing=_stand;
+    }
+    public boolean getStanding()
+    {
+        return standing;
     }
     
 }

@@ -65,6 +65,7 @@ public class ServerHandler
         if(connected)
         {
             serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1);
+            Network.myTurn=false;
         }
     }
     public static void sendHit(int val)
@@ -215,7 +216,7 @@ public class ServerHandler
                                         Card.cards[ypost].setInPlay(true);
                                         Network.goldfinger.hand.add(Card.cards[xpost]);
                                         Card.cards[xpost].setInPlay(true);
-                                        Network.myTurn=true;
+                                        //Network.myTurn=true;
                                     }
                                     if(zpost==2)
                                     {
@@ -243,7 +244,7 @@ public class ServerHandler
                                         Network.james.hand.add(Card.cards[ypost]);
                                         Card.cards[ypost].setInPlay(true);
                                     }
-                                   
+                                    
                                 }
                                                                                                        
                             }
@@ -252,11 +253,16 @@ public class ServerHandler
                                 if(vpost==-1)
                                 {
                                 Network.thePot=wpost;
-                                //Network.myTurn = true;
+                                Network.myTurn = true;
                                 }
                                 if(vpost==1)
                                 {
-                                    //Network.myTurn = true;
+                                    if(zpost==0)
+                                    {
+                                        Network.dealer.setStanding(true);
+                                    }
+                                    else
+                                    Network.myTurn = true;
                                 }
                             }
                             
@@ -292,7 +298,7 @@ public class ServerHandler
 //                            }
                             
                             
-                            Network.myTurn = true;
+                            //Network.myTurn = true;
  
                             
                         }
