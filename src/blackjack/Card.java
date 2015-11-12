@@ -34,7 +34,7 @@ public class Card {
         {
             if(temp!=null)
             {
-                if(temp.getEffect()==1)
+                if(temp.getEffect()==0)
                 {
                    _player.setAmtMoney(_player.getAmtMoney());
                    _player2.setAmtMoney(_player2.getAmtMoney());
@@ -54,7 +54,7 @@ public class Card {
                     _player.setAmtMoney(_player.getAmtMoney()+50);
                    _player2.setAmtMoney(_player2.getAmtMoney()-100);
                 }
-                else if(temp.getEffect()==0)
+                else if(temp.getEffect()==4)
                 {
                     Card c;
 //                    for(Card t: _player2.hand)
@@ -112,11 +112,11 @@ public class Card {
                 else if(i==2)
                 cards[index] = new Card(index+1-13*i,Suite.DIAMONDS,0);
                 else if(i==3)
-                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,0);
+                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,4);
                     else if(i==4)
                     {
                         if(index<7)
-                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,(int)(Math.random()*4+1));
+                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,4);//(int)(Math.random()*4+1));
                     }
             }
         }

@@ -22,7 +22,7 @@ public class Network extends JFrame implements Runnable
     public static final int XBORDER = 20;
     public static final int YBORDER = 20;
     public static final int YTITLE = 25;
-    public static final int WINDOW_WIDTH = 1920;
+    public static final int WINDOW_WIDTH = 1920/2;
     public static final int WINDOW_HEIGHT = 1045;
     final public static int NUM_ROWS = 8;
     final public static int NUM_COLUMNS = 8;
@@ -42,7 +42,7 @@ public class Network extends JFrame implements Runnable
     boolean yes = true;
     
     /////////////////////////////////////////////////////////
-    boolean showRules=true;
+    boolean showRules=false;
     Image table;
     /**
      * Variables to do with gameplay
