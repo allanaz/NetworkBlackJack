@@ -135,7 +135,11 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
+<<<<<<< HEAD
                                                  for(Card temp: james.hand)
+=======
+                                                for(Card temp: james.hand)
+>>>>>>> origin/menu/special-cards
                                                         {
                                                             if(temp!=null)
                                                             {
@@ -145,7 +149,10 @@ public class Network extends JFrame implements Runnable
                                                                 }
                                                             }
                                                         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> origin/menu/special-cards
                                                 }
                                                 
                                                 
@@ -160,6 +167,16 @@ public class Network extends JFrame implements Runnable
 //                                                            jWin=true;
 //                                                else if(james.getHandValue()>21)
 //                                                            jBust=true;
+                                                for(Card temp: james.hand)
+                                                        {
+                                                            if(temp!=null)
+                                                            {
+                                                               if(temp.getSuite()==Card.Suite.SPECIAL)
+                                                                {
+                                                                    temp.doEffect(james, goldfinger);
+                                                                }
+                                                            }
+                                                        }
                                             }
                                     
                                         
@@ -178,7 +195,16 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 goldfinger.setInGame(true);
-                                                
+                                                for(Card temp: goldfinger.hand)
+                                                        {
+                                                            if(temp!=null)
+                                                            {
+                                                               if(temp.getSuite()==Card.Suite.SPECIAL)
+                                                                {
+                                                                    temp.doEffect(goldfinger, james);
+                                                                }
+                                                            }
+                                                        }
                                                 }
                                             }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
@@ -192,6 +218,16 @@ public class Network extends JFrame implements Runnable
 //                                                    gWin=true;
 //                                                else if(goldfinger.getHandValue()>21)
 //                                                    gBust=true;
+                                                        for(Card temp: goldfinger.hand)
+                                                        {
+                                                            if(temp!=null)
+                                                            {
+                                                               if(temp.getSuite()==Card.Suite.SPECIAL)
+                                                                {
+                                                                    temp.doEffect(goldfinger, james);
+                                                                }
+                                                            }
+                                                        }
                                             }
                                     
                                         
@@ -526,9 +562,17 @@ public class Network extends JFrame implements Runnable
             {
                         
 
+<<<<<<< HEAD
           if(temp.getSuite()==Card.Suite.SPECIAL)
                 g.drawString("?", 300+index, 350);
             else      
+=======
+                if(temp.getSuite()==Card.Suite.SPECIAL)
+                {
+                    g.fillRect(300 + index,300,5,5);
+                }
+                    else
+>>>>>>> origin/menu/special-cards
         temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
 
             index+=170;
@@ -557,8 +601,15 @@ public class Network extends JFrame implements Runnable
             if(temp!=null)
             {
                 if(temp.getSuite()==Card.Suite.SPECIAL)
+<<<<<<< HEAD
                 g.drawString("?", 300+index, 350);
             else
+=======
+                {
+                    g.fillRect(300 + index,300,5,5);
+                }
+                else
+>>>>>>> origin/menu/special-cards
            temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
             index2+=170;
             }

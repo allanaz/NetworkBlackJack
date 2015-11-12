@@ -79,6 +79,10 @@ public class Player {
                 Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
                 
+<<<<<<< HEAD
+=======
+                
+>>>>>>> origin/menu/special-cards
                 hit=true;
                 
                 return randomCard;
@@ -109,6 +113,10 @@ public class Player {
     public String getName()
     {
         return name;
+    }
+    public void setAmtMoney(int money)
+    {
+        amtMoney=money;
     }
     public int getAmtMoney()
     {
