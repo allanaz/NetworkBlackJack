@@ -22,7 +22,7 @@ public class Network extends JFrame implements Runnable
     public static final int XBORDER = 20;
     public static final int YBORDER = 20;
     public static final int YTITLE = 25;
-    public static final int WINDOW_WIDTH = 1920/2;
+    public static final int WINDOW_WIDTH = 1920;
     public static final int WINDOW_HEIGHT = 1045;
     final public static int NUM_ROWS = 8;
     final public static int NUM_COLUMNS = 8;
@@ -42,7 +42,7 @@ public class Network extends JFrame implements Runnable
     boolean yes = true;
     
     /////////////////////////////////////////////////////////
-    boolean showRules=false;
+    boolean showRules=true;
     Image table;
     /**
      * Variables to do with gameplay
@@ -572,7 +572,7 @@ public class Network extends JFrame implements Runnable
 //                }
                   
                 
-              temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
+              temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient,temp.getInPlay());
 
                   index+=170;
             
@@ -607,7 +607,7 @@ public class Network extends JFrame implements Runnable
 //                    g.fillRect(300 + index,300,5,5);
 //                }
 //               
-           temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
+           temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient,temp.getInPlay());
             index2+=170;
             }
         }
@@ -660,7 +660,7 @@ public class Network extends JFrame implements Runnable
     	if(showRules==true)
     	{
         	g.setColor(Color.black);
-       	g.fillRect(getX(getWidth2()/3-3),getY(0),getWidth2()/3,getHeight2()/2+5);
+       	g.fillRect(getX(getWidth2()/3-3),getY(0),getWidth2()/3,getHeight2()/2+5+25);
        	
        	g.setColor(Color.white);
     	g.setFont(new Font("Impact",Font.BOLD,50));
@@ -676,9 +676,9 @@ public class Network extends JFrame implements Runnable
     	g.drawString("indicated on the card. The king, queen, jack cards are are all worth", getX(getWidth2()/3),getY(165));
     	g.drawString("10 points and the ace is worth 11 or 1 points.", getX(getWidth2()/3),getY(190));
     	g.drawString("6.To get the money you want to be as close to 21 without going over", getX(getWidth2()/3),getY(215));
-    	g.drawString("7.Before getting more cards a player can choose to raise", getX(getWidth2()/3),getY(240));
+    	g.drawString("7.Before getting more cards a player can choose to raise/match the bet", getX(getWidth2()/3),getY(240));
     	g.drawString(" the amount each player has in the pot.", getX(getWidth2()/3),getY(265));
-    	g.drawString("8.To stay in you have to raise your amount of money in the pot.", getX(getWidth2()/3),getY(290));
+    	g.drawString("8.To stay in you have to raise/match your amount of money in the pot.", getX(getWidth2()/3),getY(290));
     	g.drawString("9.On your turn you can choose to get another card which will add the ", getX(getWidth2()/3),getY(315));
     	g.drawString("corresponding amount of points. You can keep adding cards until your ", getX(getWidth2()/3),getY(340));
     	g.drawString("turn is over 21 or you decide to stop.", getX(getWidth2()/3),getY(365));
@@ -686,7 +686,8 @@ public class Network extends JFrame implements Runnable
     	g.drawString("the other player or will help the other player.", getX(getWidth2()/3),getY(415));
     	g.drawString("11.Who ever is the closest to 21 without going over wins all", getX(getWidth2()/3),getY(440));
     	g.drawString("the other players bets.", getX(getWidth2()/3),getY(465));
-    	g.drawString("12.To win you have to have the most money out of all the players.", getX(getWidth2()/3),getY(490));
+        g.drawString("12.If there is a tie each player gets their money back", getX(getWidth2()/3),getY(490));
+    	g.drawString("13.To win you have to have the most money out of all the players.", getX(getWidth2()/3),getY(515));
     	
     	}
 

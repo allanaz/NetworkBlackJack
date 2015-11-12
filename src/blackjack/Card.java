@@ -112,7 +112,7 @@ public class Card {
                 else if(i==2)
                 cards[index] = new Card(index+1-13*i,Suite.DIAMONDS,0);
                 else if(i==3)
-                cards[index] = new Card(index+1-13*i,Suite.CLUBS,0);
+                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,0);
                     else if(i==4)
                     {
                         if(index<7)
@@ -126,11 +126,12 @@ public class Card {
     }
     ////create draw card method which takes value of boolean faceUp, then displays card either face up with value or face down without.
     
-    public void drawCard(Graphics2D g,int xpos,int ypos,double xscale,double yscale,int value, Suite suite, boolean faceUp)
+    public void drawCard(Graphics2D g,int xpos,int ypos,double xscale,double yscale,int value, Suite suite, boolean faceUp,boolean inPlay)
 	{
     	g.translate(xpos,ypos);
     	g.scale( xscale , yscale );
-    	
+    	if(inPlay==true)
+        {
         if(faceUp)
         {
         if(suite == Suite.HEARTS || suite == Suite.DIAMONDS)
@@ -192,7 +193,8 @@ public class Card {
                 g.drawString("" + value, 0, 19);
             }
         }
-            else if(faceUp && suite == Suite.SPECIAL)
+        }
+            else if(faceUp && suite == Suite.SPECIAL&&inPlay==true)
         {
             g.setColor(Color.white);
             g.fillRoundRect(0, 0, 15, 20,2,2);
