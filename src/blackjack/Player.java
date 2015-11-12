@@ -78,11 +78,7 @@ public class Player {
                 System.out.println(Card.cards[randomCard]);
                 Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
-                for(Card temp:hand)
-                {
-                    if(temp!=null)
-                    temp.doEffect(this, this);
-                }
+                
                 hit=true;
                 
                 return randomCard;
