@@ -22,7 +22,7 @@ public class Network extends JFrame implements Runnable
     public static final int XBORDER = 20;
     public static final int YBORDER = 20;
     public static final int YTITLE = 25;
-    public static final int WINDOW_WIDTH = 1920;
+    public static final int WINDOW_WIDTH = 1920/2;
     public static final int WINDOW_HEIGHT = 1045;
     final public static int NUM_ROWS = 8;
     final public static int NUM_COLUMNS = 8;
@@ -40,8 +40,9 @@ public class Network extends JFrame implements Runnable
     boolean gBust=false;
     boolean jBust=false;
     boolean yes = true;
+    
     /////////////////////////////////////////////////////////
-    boolean showRules=true;
+    boolean showRules=false;
     Image table;
     /**
      * Variables to do with gameplay
@@ -562,20 +563,21 @@ public class Network extends JFrame implements Runnable
                         
 
 
-          if(temp.getSuite()==Card.Suite.SPECIAL)
-                g.drawString("?", 300+index, 350);
-            else      
+//                if(temp.getSuite()==Card.Suite.SPECIAL&&temp.getFaceUp()==true);
+//                {
+//                      temp.drawJester(g,300.0 + index,300,180,5.0,5.0);
+//                      //drawJester(g,7.5,10,180,.4,.4);
+//
+//
+//                }
+                  
+                
+              temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
 
-                if(temp.getSuite()==Card.Suite.SPECIAL)
-                {
-                    g.fillRect(300 + index,300,5,5);
-                }
-                    else
-        temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient);
-
-            index+=170;
-            }
+                  index+=170;
+            
         }
+    }
         g.setColor(Color.red);
 
         if(jWin)
@@ -598,13 +600,13 @@ public class Network extends JFrame implements Runnable
         {
             if(temp!=null)
             {
-                if(temp.getSuite()==Card.Suite.SPECIAL)
-                g.drawString("?", 300+index, 350);
-            else
-                {
-                    g.fillRect(300 + index,300,5,5);
-                }
-               
+//                if(temp.getSuite()==Card.Suite.SPECIAL)
+//                g.drawString("?", 300+index, 350);
+//            else
+//                {
+//                    g.fillRect(300 + index,300,5,5);
+//                }
+//               
            temp.drawCard(g,300 + index2,550,5,5,temp.getValue(),temp.getSuite(),!isClient);
             index2+=170;
             }

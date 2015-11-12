@@ -100,7 +100,8 @@ public class Player {
                  {
                     System.out.println(Card.cards[randomCard]);
                     Card.cards[randomCard].setInPlay(false);
-                    addCard(Card.cards[randomCard]);
+                    this.hand.remove(Card.cards[randomCard]);
+                    //addCard(Card.cards[randomCard]);
 
                     hit=true;
 
