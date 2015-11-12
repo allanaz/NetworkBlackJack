@@ -76,14 +76,22 @@ public class ClientHandler
     value 1 = second Card to be added
     value 3 = player to be added to (0 for dealer, 1 for other player,2 for self)
     value 4 = thePot
+    value 5 = stand (if !=-1, then myturn=false)
     */
+    public static void sendStand()
+    {
+        if(connected)
+        {
+            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1);
+        }
+    }
     public static void sendHit(int val)
     {
 		if (connected)
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1 );
 			Network.myTurn = false;
 		}        
     }
@@ -93,7 +101,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1 );
 			Network.myTurn = false;
 		}        
     }
@@ -103,7 +111,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val);
+                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -112,7 +120,7 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1);
+			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -121,7 +129,7 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1);
+			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -130,7 +138,7 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1);
+			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -179,7 +187,7 @@ public class ClientHandler
 							int xpost = Integer.parseInt(inputLine.split(":")[1]);
                                                         int zpost = Integer.parseInt(inputLine.split(":")[2]);
                                                         int wpost = Integer.parseInt(inputLine.split(":")[3]);
-                            
+                                                        int vpost = Integer.parseInt(inputLine.split(":")[4]);
                                                         if(ypost!=-1)
                                                         {
                                                             if(xpost!=-1)
@@ -229,7 +237,18 @@ public class ClientHandler
 
                                                         }
                                                         if(ypost==-1)
+                                                        {
+                                                            if(vpost==-1)
+                                                            {
                                                             Network.thePot=wpost;
+                                                            //Network.myTurn = true;
+                                                            }
+                                                            if(vpost==1)
+                                                            {
+                                                                //Network.myTurn = true;
+                                                            }
+                                                            
+                                                        }
                                                         
                                                         //Network.serverValue=ypost;
 //                                                        if(ypost>=0)

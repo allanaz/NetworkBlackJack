@@ -75,7 +75,30 @@ public class Network extends JFrame implements Runnable
             {
                 if (e.BUTTON1 == e.getButton())
                 {
-
+                    //getX(getWidth2()-1005), getY(getHeight2()*15/16), getHeight2()/8, 100                    
+                    int xpos = e.getX();
+                    int ypos = e.getY();
+                    if(xpos<getX(getWidth2()-5)&&xpos>getX(getWidth2()-105)
+                            &&ypos<(getY(getHeight2()*13/16)+50)&&ypos>getY(getHeight2()*13/16))                        
+                    {
+                        System.out.println("hitBox");
+                        if(isClient)
+                        {
+                            System.out.println("sending from client");
+                            ClientHandler.sendStand();
+                        }
+                        else
+                        {
+                            System.out.println("sending from server");
+                            ServerHandler.sendStand();
+                        }
+                              
+                        
+                    }
+                }
+                if(e.BUTTON3==e.getButton())
+                {
+                    
                 }
 
                 repaint();
@@ -533,6 +556,10 @@ public class Network extends JFrame implements Runnable
         
         g.setColor(Color.red);
         g.fillOval(getX(5), getY(getHeight2()*7/8), getHeight2()/10, getHeight2()/10);
+        g.fillRoundRect(getX(getWidth2()-105), getY(getHeight2()*13/16), 100, 50, 2, 2);
+        
+        //System.out.println(getY(getHeight2()*13/16));
+        
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(james.getName(), getX(5), getY(getHeight2()*3/4+15));
         
