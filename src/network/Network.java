@@ -144,6 +144,7 @@ public class Network extends JFrame implements Runnable
                                                         {
                                                             if(temp!=null)
                                                             {
+                                                                
                                                                if(temp.getSuite()==Card.Suite.SPECIAL)
                                                                 {
                                                                     temp.doEffect(james, goldfinger);

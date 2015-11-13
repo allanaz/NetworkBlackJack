@@ -72,6 +72,7 @@ public class Player {
         boolean hit=false;
         while (hit ==false)
         {
+            
              int randomCard=(int)(Math.random()*52);
              if(!Card.cards[randomCard].getInPlay())
              {
@@ -87,6 +88,7 @@ public class Player {
          return 55;
         
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public int getPlayerCard()
     {
         boolean hit=false;
@@ -96,6 +98,7 @@ public class Player {
              
              if(Card.cards[randomCard].getInPlay())
              {
+                 
                  if(this.hand.contains(Card.cards[randomCard]))
                  {
                     System.out.println(Card.cards[randomCard]);
@@ -112,6 +115,7 @@ public class Player {
         }
         return 12;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setPlayerCard(int c)
     {
         boolean hit=false;
@@ -133,6 +137,7 @@ public class Player {
         }
         
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public int getHandValue()
     {
         int handValue=0;
@@ -156,6 +161,7 @@ public class Player {
     {
         return name;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void setAmtMoney(int money)
     {
         amtMoney=money;
@@ -164,6 +170,7 @@ public class Player {
     {
         return amtMoney;
     }
+    /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public Card getCard(int index)
     {
         return hand.get(index);
