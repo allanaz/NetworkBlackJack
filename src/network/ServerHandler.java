@@ -116,6 +116,15 @@ public class ServerHandler
 			Network.myTurn = false;
 		}        
     }
+    public static void sendMoneyEffect(int val,int val2)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(-1 + ":" + -1 + ":" + 1 + ":" + -1+":"+-1+":"+val+":"+val2);
+			//Network.myTurn = false;
+		}        
+    }
     public static void sendOtherPlayerDeal(int val,int val2)
     {
 		if (connected)
@@ -198,6 +207,8 @@ public class ServerHandler
                             int zpost = Integer.parseInt(inputLine.split(":")[2]);
                             int wpost = Integer.parseInt(inputLine.split(":")[3]);
                             int vpost = Integer.parseInt(inputLine.split(":")[4]);
+                            int upost = Integer.parseInt(inputLine.split(":")[5]);
+                            int tpost = Integer.parseInt(inputLine.split(":")[6]);
                             
                             if(ypost!=-1)
                             {
@@ -261,6 +272,11 @@ public class ServerHandler
                                     if(zpost==0)
                                     {
                                         Network.dealer.setStanding(true);
+                                    }
+                                    if(upost!=-1)
+                                    {
+                                        Network.james.setAmtMoney(upost);
+                                        Network.goldfinger.setAmtMoney(tpost);
                                     }
                                     else
                                     Network.myTurn = true;

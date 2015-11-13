@@ -74,7 +74,7 @@ public class Player {
         boolean hit=false;
         while (hit ==false)
         {
-             int randomCard=(int)(Math.random()*52);
+             int randomCard=(int)(Math.random()*Card.numCardsInDeck);
              if(Card.cards[randomCard].getInPlay()==false)
              {
                 System.out.println(Card.cards[randomCard]);
@@ -87,6 +87,54 @@ public class Player {
          return 55;
         
     }
+     public int getPlayerCard()
+    {
+        boolean hit=false;
+        while (hit ==false)
+        {
+             int randomCard=(int)(Math.random()*52);
+             
+             if(Card.cards[randomCard].getInPlay())
+             {
+                 if(hand.contains(Card.cards[randomCard]))
+                 {
+                    System.out.println(Card.cards[randomCard]);
+                    Card.cards[randomCard].setInPlay(false);
+                    hand.remove(Card.cards[randomCard]);
+                    //addCard(Card.cards[randomCard]);
+
+                    hit=true;
+
+                    return randomCard;
+                 }
+             }
+             
+        }
+        return 12;
+    }
+    
+    public void setPlayerCard(int c)
+    {
+        boolean hit=false;
+        while (hit ==false)
+        {
+             //int randomCard=(int)(Math.random()*52);
+             
+             if(!Card.cards[c].getInPlay())
+             {
+                System.out.println(Card.cards[c]);
+                Card.cards[c].setInPlay(true);
+                addCard(Card.cards[c]);
+                
+                hit=true;
+                
+                
+             }
+             
+        }
+        
+    }
+
     public int getHandValue()
     {
         int handValue=0;
