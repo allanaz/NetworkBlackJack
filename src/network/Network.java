@@ -22,7 +22,7 @@ public class Network extends JFrame implements Runnable
     public static final int XBORDER = 20;
     public static final int YBORDER = 20;
     public static final int YTITLE = 25;
-    public static final int WINDOW_WIDTH = 1920;
+    public static final int WINDOW_WIDTH = 1920/2;
     public static final int WINDOW_HEIGHT = 1045;
     final public static int NUM_ROWS = 8;
     final public static int NUM_COLUMNS = 8;
@@ -36,16 +36,17 @@ public class Network extends JFrame implements Runnable
     static Player james=new Player("James Bond",200);
     static Player goldfinger = new Player("Goldfinger",500);
     static Player dealer = new Player("Dealer Yee",1000);
-    boolean gWin=false;
-    boolean jWin =false;
-    boolean gBust=false;
-    boolean jBust=false;
-    boolean dWin=false;
-    boolean dBust=false;
-    boolean hitTime = false;
-    boolean betTime=false;
-    boolean beforeDeal= true;
-    boolean roundEnd= false;
+    static boolean gWin=false;
+    static boolean jWin =false;
+    static boolean gBust=false;
+    static boolean jBust=false;
+    static boolean dWin=false;
+    static boolean dBust=false;
+    static boolean hitTime = false;
+    static boolean betTime=false;
+    static boolean beforeDeal= true;
+    static boolean roundEnd= false;
+    static boolean roundOver=false;
     public static int thePot=0;
     public static int myBet=0;
     /////////////////////////////////////////////////////////
@@ -79,6 +80,9 @@ public class Network extends JFrame implements Runnable
         {
             public void mousePressed(MouseEvent e)
             {
+                
+                if (myTurn && gameStarted )
+                {
                 if (e.BUTTON1 == e.getButton())
                 {
                     //getX(getWidth2()-1005), getY(getHeight2()*15/16), getHeight2()/8, 100                    
@@ -103,6 +107,7 @@ public class Network extends JFrame implements Runnable
                               
                         
                     }
+                }
                 }
                 if(e.BUTTON3==e.getButton())
                 {
@@ -240,7 +245,7 @@ public class Network extends JFrame implements Runnable
 //                                                else if(goldfinger.getHandValue()>21)
 //                                                    gBust=true;
                                             }
-                                            if(e.getKeyCode()==KeyEvent.VK_B)
+                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
                                             {
                                                 thePot+=2;
                                                 myBet+=2;
@@ -252,6 +257,13 @@ public class Network extends JFrame implements Runnable
                                         
                                 }
                                 
+                }
+                if(gameStarted&&roundOver)
+                {
+                    if(e.getKeyCode()==KeyEvent.VK_R)
+                    {
+                        newRound();
+                    }
                 }
                 ///////////////////////////////////////////////////////
 //                else if (myTurn && gameStarted && e.getKeyCode() == KeyEvent.VK_B)
@@ -479,6 +491,47 @@ public class Network extends JFrame implements Runnable
         Card.createDeck();
 
     }
+    public static void newRound()
+    {
+        for(Card temp : Card.cards)
+        {
+            temp.setInPlay(false);
+            temp.setPlayerNull();
+            
+        }
+        james.hand.clear();
+        goldfinger.hand.clear();
+        dealer.hand.clear();
+        james.setStanding(false);
+        goldfinger.setStanding(false);
+        dealer.setStanding(false);
+        james.setInGame(false);
+        goldfinger.setInGame(false);
+        dealer.setInGame(false);
+        if(isClient)
+        {
+            myTurn=true;
+        }
+        else
+        {
+            myTurn=false;
+        }
+        gWin=false;
+        jWin =false;
+        gBust=false;
+        jBust=false;
+        dWin=false;
+        dBust=false;
+        hitTime = false;
+        betTime=false;
+        beforeDeal= true;
+        roundEnd= false;
+        roundOver=false;
+        thePot=0;
+        myBet=0;
+        
+
+    }
 
 
     // ///////////////////////////////////////////////////////////////////////
@@ -567,6 +620,11 @@ public class Network extends JFrame implements Runnable
         Color button = new Color(217,197,137);
         g.setColor(button);
         g.fillRoundRect(getX(getWidth2()-105), getY(getHeight2()*13/16), 100, 50, 2, 2);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString("isClient is "+isClient, getX(5), getY(100));
+        g.drawString("My Turn "+myTurn, getX(5), getY(120));
+        g.drawString("dealerstand is "+dealer.getStanding(), getX(5), getY(140));
+        g.drawString("roundEnd is "+roundEnd, getX(5), getY(160));
         if(isClient)
         {
         
@@ -663,6 +721,65 @@ public class Network extends JFrame implements Runnable
         g.setColor(Color.red);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString("The Pot: "+thePot,getX(getWidth2()-getWidth2()/2),200);
+        ////////////////Table Directions/Title///////////////
+            g.setColor(Color.white);
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            int fontSize = (int)(tk.getScreenSize().getHeight()/1080*150);
+            Font title = new Font("Bodoni MT",Font.BOLD,fontSize);
+            g.setFont(title);
+            FontMetrics fontMetrics = g.getFontMetrics(title);
+            int xPos= (int) (getWidth2()/2-(fontMetrics.stringWidth("BLACKJACK")/2));
+            g.drawString("BLACKJACK", getX(xPos), getY(getHeight2()/2));
+            g.setColor(button);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            if(beforeDeal)
+            {
+                if(isClient)
+                    g.drawString("Hit the Deal Button to start the game", getX(xPos), getY(getHeight2()/2)+40);
+                else
+                    g.drawString("Wait for the other player to start the game",getX(xPos), getY(getHeight2()/2+40));              
+            }
+            else if(betTime)
+            {
+                if(isClient)
+                {
+                    if(myTurn)
+                    g.drawString("Click a Poker Chip to Bet its value", getX(xPos), getY(getHeight2()/2)+40);
+                    else
+                    g.drawString("Other player is betting...", getX(xPos), getY(getHeight2()/2)+40);    
+                }
+                else
+                {
+                    if(!myTurn)
+                        g.drawString("Other player is betting...", getX(xPos), getY(getHeight2()/2)+40);
+                    
+                    else
+                        g.drawString("Click a Poker Chip to Bet its value", getX(xPos), getY(getHeight2()/2)+40);
+                }
+            }
+            else if(hitTime)
+            {
+                if(isClient)
+                {
+                    if(!james.getStanding())
+                        g.drawString("Hit until you want to stop. Then click the Stand Button", getX(xPos), getY(getHeight2()/2)+40);
+                    if(james.getStanding())
+                        g.drawString("Other player hitting...", getX(xPos), getY(getHeight2()/2)+40);
+                }
+                else
+                {
+                    if(!james.getStanding())
+                        g.drawString("Other player hitting...", getX(xPos), getY(getHeight2()/2)+40);
+                    else if(!goldfinger.getStanding())
+                        g.drawString("Hit until you want to stop. Then click the Stand Button", getX(xPos), getY(getHeight2()/2)+40);
+                    
+                        
+                }
+            }
+            else if(roundOver)
+            {
+                g.drawString("Hit the new Round Button to start next round", getX(xPos), getY(getHeight2()/2)+40);
+            }
         //////////win/bust/////////
         g.setColor(Color.red);
         if(jWin)
@@ -686,6 +803,18 @@ public class Network extends JFrame implements Runnable
         {
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
             g.drawString("Goldfinger Bust", 600, 270);
+        }
+        /////////////////////////////////////////////////////////        
+        g.setColor(Color.red);
+        if(dWin)
+        {
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Dealer Wins", 600, 220);
+        }
+        if(dBust)
+        {
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Dealer Bust", 600, 270);
         }
         }
         /////////////////////////////////////////////////////////
@@ -786,12 +915,12 @@ public class Network extends JFrame implements Runnable
 
             reset();
         }
-        if(thePot==2*myBet&&thePot>0)
+        if(betTime&&thePot==2*myBet&&thePot>0)
         {
             betTime=false;
             hitTime=true;
         }
-        if(isClient)
+        if(isClient&&hitTime&&james.getStanding()==false)
         {
             if(james.getHandValue()>=21)
             {
@@ -800,16 +929,16 @@ public class Network extends JFrame implements Runnable
                 ClientHandler.sendStand();
             }
         }
-        else
+        else if(!isClient&&hitTime&&goldfinger.getStanding()==false)
         {
            if(goldfinger.getHandValue()>=21)
             {
                 goldfinger.setStanding(true);
-                System.out.println("sending from client");
+                System.out.println("sending from server");
                 ServerHandler.sendStand();
             } 
         }
-        if(isClient&&james.getStanding()&&goldfinger.getStanding())
+        if(isClient&&myTurn&&james.getStanding()&&goldfinger.getStanding()&&!roundOver)
         {
             if(dealer.getHandValue()<17)
             {
@@ -839,15 +968,53 @@ public class Network extends JFrame implements Runnable
             gWin=true;
         else if(goldfinger.getHandValue()>21)
             gBust=true;
+        if(dealer.getHandValue()==21)
+            dWin=true;
+        else if(dealer.getHandValue()>21)
+            dBust=true;
         else if(!jWin&&!gWin&&!dWin)
         {
-            if(dealer.getHandValue()<21&&dealer.getHandValue()>james.getHandValue()&&dealer.getHandValue()>goldfinger.getHandValue()||jBust&&gBust)
+            
+            if(dealer.getHandValue()<21&&(dealer.getHandValue()>james.getHandValue()||jBust)&&(dealer.getHandValue()>goldfinger.getHandValue()||gBust))
                 dWin=true;
-            else if(james.getHandValue()<21&&james.getHandValue()>dealer.getHandValue()&&dealer.getHandValue()>goldfinger.getHandValue()||gBust&&dBust)
+            else if(james.getHandValue()<21&&(james.getHandValue()>dealer.getHandValue()||dBust)&&(james.getHandValue()>goldfinger.getHandValue()||gBust))
                 jWin=true;
-            else if(goldfinger.getHandValue()<21&&goldfinger.getHandValue()>james.getHandValue()&&goldfinger.getHandValue()>dealer.getHandValue()||jBust&&dBust)
+            else if(goldfinger.getHandValue()<21&&(goldfinger.getHandValue()>james.getHandValue()||jBust)&&(goldfinger.getHandValue()>dealer.getHandValue()||dBust))
                 gWin=true;
         }
+        
+        if(jWin)
+        {
+            james.setAmtMoney(james.getAmtMoney()+thePot);
+            thePot=0;
+            roundEnd=false;
+            roundOver=true;
+        }
+        else if(gWin)
+        {
+            goldfinger.setAmtMoney(goldfinger.getAmtMoney()+thePot);
+            thePot=0;
+            roundEnd=false;
+            roundOver=true;
+        }        
+        else if(dWin)
+        {
+            roundEnd=false;
+            roundOver=true;
+            thePot=0;
+        }
+        else
+        {
+            thePot=0;
+            roundEnd=false;
+            roundOver=true;
+        }
+        
+        
+            
+        
+        
+        
         
         }
         

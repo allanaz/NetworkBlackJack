@@ -237,4 +237,8 @@ public class Card {
     {
         return(value +""+ suite);
     }
+    public void setPlayerNull()
+    {
+        thePlayer=null;
+    }
 }

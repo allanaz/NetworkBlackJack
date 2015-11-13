@@ -75,7 +75,7 @@ public class ServerHandler
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
                     serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1 );
-			Network.myTurn = false;
+			//Network.myTurn = false;
 		}        
     }
     public static void sendDealerHit(int val)
@@ -225,7 +225,8 @@ public class ServerHandler
                                         Network.james.hand.add(Card.cards[xpost]);
                                         Card.cards[xpost].setInPlay(true);
                                     }
-                                    
+                                    Network.beforeDeal=false;
+                                    Network.betTime=true;
                                 }
                                 if(xpost==-1)
                                 {
@@ -250,12 +251,12 @@ public class ServerHandler
                             }
                             if(ypost==-1)
                             {
-                                if(vpost==-1)
+                                if(wpost!=-1)
                                 {
                                 Network.thePot=wpost;
                                 Network.myTurn = true;
                                 }
-                                if(vpost==1)
+                                if(wpost==-1)
                                 {
                                     if(zpost==0)
                                     {

@@ -7,8 +7,8 @@ public class Player {
     private String name;
     public ArrayList<Card> hand = new ArrayList<Card>();
     private int amtMoney;
-    public enum winState {UNDER,TWENTYONE,BUST}
-    private winState status;
+//    public enum winState {UNDER,TWENTYONE,BUST}
+//    private winState status;
     private boolean inGame;
     private boolean standing;
      
@@ -113,6 +113,10 @@ public class Player {
     public int getAmtMoney()
     {
         return amtMoney;
+    }
+    public void setAmtMoney(int _money)
+    {
+        amtMoney=_money;
     }
     public Card getCard(int index)
     {
