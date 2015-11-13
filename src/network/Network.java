@@ -44,6 +44,7 @@ public class Network extends JFrame implements Runnable
     /////////////////////////////////////////////////////////
     boolean showRules=false;
     Image table;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     /**
      * Variables to do with gameplay
      */
@@ -137,7 +138,7 @@ public class Network extends JFrame implements Runnable
                                                 ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
 
-                                                 
+                                                //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
                                                 for(Card temp: james.hand)
 
@@ -151,7 +152,7 @@ public class Network extends JFrame implements Runnable
                                                             }
                                                         }
 
-
+                                                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
                                                 }
                                                 
@@ -167,6 +168,7 @@ public class Network extends JFrame implements Runnable
 //                                                            jWin=true;
 //                                                else if(james.getHandValue()>21)
 //                                                            jBust=true;
+                                                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                 for(Card temp: james.hand)
                                                         {
                                                             if(temp!=null)
@@ -177,6 +179,7 @@ public class Network extends JFrame implements Runnable
                                                                 }
                                                             }
                                                         }
+                                                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             }
                                     
                                         
@@ -195,6 +198,7 @@ public class Network extends JFrame implements Runnable
                                                 System.out.println("sending from client");
                                                 ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
                                                 goldfinger.setInGame(true);
+                                                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                 for(Card temp: goldfinger.hand)
                                                         {
                                                             if(temp!=null)
@@ -205,6 +209,7 @@ public class Network extends JFrame implements Runnable
                                                                 }
                                                             }
                                                         }
+                                                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                 }
                                             }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
@@ -218,6 +223,7 @@ public class Network extends JFrame implements Runnable
 //                                                    gWin=true;
 //                                                else if(goldfinger.getHandValue()>21)
 //                                                    gBust=true;
+                                            ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                                         for(Card temp: goldfinger.hand)
                                                         {
                                                             if(temp!=null)
@@ -228,6 +234,7 @@ public class Network extends JFrame implements Runnable
                                                                 }
                                                             }
                                                         }
+                                                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             }
                                     
                                         
@@ -355,6 +362,7 @@ public class Network extends JFrame implements Runnable
                         {
                             ipAddress = ipAddress.substring(0,ipAddress.length()-1);
                         }
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         else if(e.VK_SPACE == e.getKeyCode()) {
                             	if(showRules==true)
                             	{
@@ -365,7 +373,7 @@ public class Network extends JFrame implements Runnable
                                 	showRules=true;
                             	}
                         	}
-
+                        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                         else if(e.getKeyCode()==KeyEvent.VK_I)
                         {
                             try
@@ -555,7 +563,7 @@ public class Network extends JFrame implements Runnable
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(james.getName(), 200, 250);
                         int index=0;
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         for(Card temp: james.hand)
         {
             if(temp!=null)
@@ -578,6 +586,7 @@ public class Network extends JFrame implements Runnable
             
         }
     }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         g.setColor(Color.red);
 
         if(jWin)
@@ -595,7 +604,7 @@ public class Network extends JFrame implements Runnable
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
         g.drawString(goldfinger.getName(), 200, 400);
                         int index2=0;
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         for(Card temp: goldfinger.hand)
         {
             if(temp!=null)
@@ -611,6 +620,7 @@ public class Network extends JFrame implements Runnable
             index2+=170;
             }
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         g.setColor(Color.red);
         if(gWin)
         {
@@ -656,6 +666,7 @@ public class Network extends JFrame implements Runnable
             g.drawString("Server value " + serverValue,100,300);
             
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //shows rules
     	if(showRules==true)
     	{
@@ -690,6 +701,7 @@ public class Network extends JFrame implements Runnable
     	g.drawString("13.To win you have to have the most money out of all the players.", getX(getWidth2()/3),getY(515));
     	
     	}
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
             try
             {

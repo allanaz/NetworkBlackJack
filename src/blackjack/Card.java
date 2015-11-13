@@ -13,6 +13,7 @@ public class Card {
     private boolean inPlay;
     private boolean faceUp;
     private Player thePlayer;
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     private int effect;
     
     Card(int _value, Suite _suite,int _effect)
@@ -24,10 +25,12 @@ public class Card {
         thePlayer=null;
         effect=_effect;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean getFaceUp()
     {
         return faceUp;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void doEffect(Player _player, Player _player2)
     {
         for(Card temp: _player.hand)
@@ -76,6 +79,7 @@ public class Card {
     {
         return effect;
     }
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public boolean addPlayer(Player _player)
     {
         if (!setPlayerOK(_player))
@@ -112,12 +116,14 @@ public class Card {
                 else if(i==2)
                 cards[index] = new Card(index+1-13*i,Suite.DIAMONDS,0);
                 else if(i==3)
-                cards[index] = new Card(index+1-13*i,Suite.SPECIAL,4);
+                cards[index] = new Card(index+1-13*i,Suite.CLUBS,4);
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                     else if(i==4)
                     {
                         if(index<7)
                 cards[index] = new Card(index+1-13*i,Suite.SPECIAL,4);//(int)(Math.random()*4+1));
                     }
+                ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             }
         }
         
@@ -194,6 +200,7 @@ public class Card {
             }
         }
         }
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             else if(faceUp && suite == Suite.SPECIAL&&inPlay==true)
         {
             g.setColor(Color.white);
@@ -210,7 +217,7 @@ public class Card {
             g.drawString("?", 11, 6);
             g.drawString("¿" , 0, 19);
         }
-
+////////////////////////////////////////////////////////////////////////////////////////////////////////////////
             
         
         else
@@ -284,6 +291,7 @@ public class Card {
     	g.rotate(-rot  * Math.PI/180.0);
     	g.translate(-xpos,-ypos);
 	}
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public void drawJester(Graphics2D g,double xpos,int ypos,double rot,double xscale,double yscale)
 	{
     	g.translate(xpos,ypos);
@@ -327,7 +335,7 @@ public class Card {
     	g.translate(-xpos,-ypos);
 	}
 
-    
+    ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
     public int getValue()
     {
         return value;
