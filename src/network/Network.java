@@ -35,11 +35,31 @@ public class Network extends JFrame implements Runnable
     /////////////////////////////////////////////////////////
     static Player james=new Player("James Bond",200);
     static Player goldfinger = new Player("Goldfinger",500);
+<<<<<<< HEAD
     boolean gWin=false;
     boolean jWin =false;
     boolean gBust=false;
     boolean jBust=false;
     boolean yes = true;
+=======
+    static Player dealer = new Player("Dealer Yee",1000);
+    static boolean gWin=false;
+    static boolean jWin =false;
+    static boolean gBust=false;
+    static boolean jBust=false;
+    static boolean dWin=false;
+    static boolean dBust=false;
+    static boolean hitTime = false;
+    static boolean betTime=false;
+    static boolean beforeDeal= true;
+    static boolean roundEnd= false;
+    static boolean roundOver=false;
+    public static int thePot=0;
+    public static int myBet=0;
+    
+    boolean showRules=false;
+    /////////////////////////////////////////////////////////
+>>>>>>> refs/remotes/origin/master
     
     /////////////////////////////////////////////////////////
     boolean showRules=false;
@@ -74,9 +94,60 @@ public class Network extends JFrame implements Runnable
         {
             public void mousePressed(MouseEvent e)
             {
+                
+                if (myTurn && gameStarted )
+                {
                 if (e.BUTTON1 == e.getButton())
                 {
-
+                    //getX(getWidth2()-1005), getY(getHeight2()*15/16), getHeight2()/8, 100                    
+                    int xpos = e.getX();
+                    int ypos = e.getY();
+                    if(xpos<getX(getWidth2()-5)&&xpos>getX(getWidth2()-105)
+                            &&ypos<(getY(getHeight2()*13/16)+50)&&ypos>getY(getHeight2()*13/16))                        
+                    {
+                        System.out.println("hitBox");
+                        if(isClient)
+                        {
+                            System.out.println("sending from client");
+                            ClientHandler.sendStand();
+                            james.setStanding(true);
+                        }
+                        else
+                        {
+                            System.out.println("sending from server");
+                            ServerHandler.sendStand();
+                            goldfinger.setStanding(true);
+                        }
+                              
+                        
+                    }
+                    if(xpos<getX(getWidth2()-5)&&xpos>getX(getWidth2()-105)
+                            &&ypos<(getY(getHeight2()*15/16)+50)&&ypos>getY(getHeight2()*15/16))                        
+                    {
+                        System.out.println("hitBox");
+                        if(isClient&&hitTime)
+                        {
+                            int hitCardIndex=0;
+                            hitCardIndex=james.hit();
+                            System.out.println("sending from client");
+                            ClientHandler.sendHit(hitCardIndex);
+                        }
+                        else if(hitTime)
+                        {
+                            int hitCardIndex=0;
+                            hitCardIndex=goldfinger.hit();
+                            System.out.println("sending from server");
+                            ServerHandler.sendHit(hitCardIndex);
+                        }
+                              
+                        
+                    }
+                    
+                }
+                }
+                if(e.BUTTON3==e.getButton())
+                {
+                    
                 }
 
                 repaint();
@@ -125,7 +196,7 @@ public class Network extends JFrame implements Runnable
                 {
 				if (isClient)
                                 {
-                                        if(e.getKeyCode()==KeyEvent.VK_D)
+                                        if(e.getKeyCode()==KeyEvent.VK_D&&beforeDeal)
                                             {
                                                 if(!james.getInGame())
                                                 {
@@ -135,8 +206,9 @@ public class Network extends JFrame implements Runnable
                                                 hitCardIndex=james.hit();
                                                 hitCardIndex2=james.hit();
                                                 System.out.println("sending from client");
-                                                ClientHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
+                                                ClientHandler.sendDeal(hitCardIndex,hitCardIndex2);
                                                 james.setInGame(true);
+<<<<<<< HEAD
 
                                                 //////////////////////////////////////////////////////////////////////////////////////////////////////////////// 
 
@@ -155,16 +227,49 @@ public class Network extends JFrame implements Runnable
 
                                                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+=======
+                                                
+                                                int dealerCardIndex=0;
+                                                int dealerCardIndex2=0;
+                                                dealerCardIndex=dealer.hit();
+                                                dealerCardIndex2=dealer.hit();
+                                                System.out.println("sending Dealer from client");
+                                                ClientHandler.sendDealerDeal(dealerCardIndex,dealerCardIndex2);
+                                                dealer.setInGame(true);
+                                                
+                                                int hitCardIndex3=0;
+                                                int hitCardIndex4=0;
+                                                hitCardIndex3=goldfinger.hit();
+                                                hitCardIndex4=goldfinger.hit();
+                                                System.out.println("sending from client");
+                                                ClientHandler.sendOtherPlayerDeal(hitCardIndex3,hitCardIndex4);
+                                                goldfinger.setInGame(true);
+                                                
+                                                beforeDeal=false;
+                                                betTime=true;
+>>>>>>> refs/remotes/origin/master
                                                 }
                                                 
                                                 
                                             }
-                                            if(e.getKeyCode()==KeyEvent.VK_H)
+                                            if(e.getKeyCode()==KeyEvent.VK_H&&hitTime)
                                             {
                                                 int hitCardIndex=0;
                                                 hitCardIndex=james.hit();
                                                 System.out.println("sending from client");
-                                                ClientHandler.sendPieceMove(hitCardIndex);
+                                                ClientHandler.sendHit(hitCardIndex);
+//                                                for(Card temp: james.hand)
+//
+//                                                        {
+//                                                            if(temp!=null)
+//                                                            {
+//                                                               if(temp.getSuite()==Card.Suite.SPECIAL)
+//                                                                {
+//                                                                    temp.doEffect(james, goldfinger);
+//                                                                }
+//                                                            }
+//                                                        }
+
 //                                                if(james.getHandValue()==21)
 //                                                            jWin=true;
 //                                                else if(james.getHandValue()>21)
@@ -182,11 +287,30 @@ public class Network extends JFrame implements Runnable
                                                         }
                                                 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             }
+                                            if(e.getKeyCode()==KeyEvent.VK_U&&hitTime)
+                                            {
+                                                for(Card temp :james.hand)
+                                                {
+                                                    if(temp.getSuite()==Card.Suite.SPECIAL)
+                                                    {
+                                                        temp.doEffect(james, goldfinger);
+                                                    }
+                                                }
+                                                
+                                            }
+                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
+                                            {
+                                                thePot+=2;
+                                                myBet+=2;
+                                                System.out.println("sending from client");
+                                                ClientHandler.sendBet(thePot);                                               
+                                            }
                                     
                                         
                                 }
 				else
                                 {
+<<<<<<< HEAD
                                     if(e.getKeyCode()==KeyEvent.VK_D)
                                             {
                                                 if(!goldfinger.getInGame())
@@ -214,12 +338,30 @@ public class Network extends JFrame implements Runnable
                                                 }
                                             }
                                             if(e.getKeyCode()==KeyEvent.VK_H)
+=======
+//                                    if(e.getKeyCode()==KeyEvent.VK_D)
+//                                            {
+//                                                if(!goldfinger.getInGame())
+//                                                {
+//                                                int hitCardIndex=0;
+//                                                int hitCardIndex2=0;
+//                                                //goldfinger.dealMeIn();
+//                                                hitCardIndex=goldfinger.hit();
+//                                                hitCardIndex2=goldfinger.hit();
+//                                                System.out.println("sending from client");
+//                                                ServerHandler.sendPieceMove(hitCardIndex,hitCardIndex2);
+//                                                goldfinger.setInGame(true);
+//                                                
+//                                                }
+//                                            }
+                                            if(e.getKeyCode()==KeyEvent.VK_H&&hitTime)
+>>>>>>> refs/remotes/origin/master
                                             {
                                                 int hitCardIndex=0;
                                                 hitCardIndex=goldfinger.hit();
                                                 System.out.println("sending from server");
                                    // serverValue++;
-					ServerHandler.sendPieceMove(hitCardIndex);
+					ServerHandler.sendHit(hitCardIndex);
 //                                                if(goldfinger.getHandValue()==21)
 //                                                    gWin=true;
 //                                                else if(goldfinger.getHandValue()>21)
@@ -237,28 +379,54 @@ public class Network extends JFrame implements Runnable
                                                         }
                                                         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
                                             }
+                                            if(e.getKeyCode()==KeyEvent.VK_U&&hitTime)
+                                            {
+                                                for(Card temp :goldfinger.hand)
+                                                {
+                                                    if(temp.getSuite()==Card.Suite.SPECIAL)
+                                                    {
+                                                        temp.doEffect(goldfinger, james);
+                                                    }
+                                                }
+                                                
+                                            }
+                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
+                                            {
+                                                thePot+=2;
+                                                myBet+=2;
+                                                System.out.println("sending from server");
+                                                //ServerHandler.sendPieceMove(-3,thePot);
+                                                ServerHandler.sendBet(thePot);
+                                            }
                                     
                                         
                                 }
                                 
                 }
-                ///////////////////////////////////////////////////////
-                else if (myTurn && gameStarted && e.getKeyCode() == KeyEvent.VK_2)
+                if(gameStarted&&roundOver)
                 {
-			if (isClient)
-                                {
-                                    System.out.println("sending from client");
-                                    clientValue+=2;
-					ClientHandler.sendPieceMove(clientValue);
-                                }
-				else
-                                {
-                                    System.out.println("sending from server");
-                                    serverValue+=2;
-					ServerHandler.sendPieceMove(serverValue);
-                                }	
-			                    
+                    if(e.getKeyCode()==KeyEvent.VK_R)
+                    {
+                        newRound();
+                    }
                 }
+                ///////////////////////////////////////////////////////
+//                else if (myTurn && gameStarted && e.getKeyCode() == KeyEvent.VK_B)
+//                {
+//			if (isClient)
+//                                {
+//                                    System.out.println("sending from client");
+//                                    thePot+=2;
+//					ClientHandler.sendPieceMove(thePot,-3);
+//                                }
+//				else
+//                                {
+//                                    System.out.println("sending from server");
+//                                    thePot+=2;
+//					ServerHandler.sendPieceMove(-3,thePot);
+//                                }	
+//			                    
+//                }
                 
                 else if (e.getKeyCode() == KeyEvent.VK_S)
                 {
@@ -478,6 +646,51 @@ public class Network extends JFrame implements Runnable
     public static void reset()
     {
         Card.createDeck();
+        for(Card temp:Card.cards)
+        {
+        System.out.println(temp);
+                }
+    }
+    public static void newRound()
+    {
+        for(Card temp : Card.cards)
+        {
+            ///////////issue resetting the cards because one or more is null, and cannot be accessed////
+            temp.setInPlay(false);
+            temp.setPlayerNull();
+            
+        }
+        james.hand.clear();
+        goldfinger.hand.clear();
+        dealer.hand.clear();
+        james.setStanding(false);
+        goldfinger.setStanding(false);
+        dealer.setStanding(false);
+        james.setInGame(false);
+        goldfinger.setInGame(false);
+        dealer.setInGame(false);
+        if(isClient)
+        {
+            myTurn=true;
+        }
+        else
+        {
+            myTurn=false;
+        }
+        gWin=false;
+        jWin =false;
+        gBust=false;
+        jBust=false;
+        dWin=false;
+        dBust=false;
+        hitTime = false;
+        betTime=false;
+        beforeDeal= true;
+        roundEnd= false;
+        roundOver=false;
+        thePot=0;
+        myBet=0;
+        
 
     }
 
@@ -548,23 +761,99 @@ public class Network extends JFrame implements Runnable
         
         
         // far outer border
-        g.setColor(Color.black);
+        g.setColor(Color.white);
         g.fillRect(0, 0, xsize, ysize);
         // ----------------
 
         // background
+<<<<<<< HEAD
       
        // g.setColor(Color.white);
+=======
+        Color background = new Color(40,59,64);
+        g.setColor(background);
+>>>>>>> refs/remotes/origin/master
         g.fillPolygon(x, y, 4);
         
         g.drawImage(table,getX(0),getY(0),getWidth2(),getHeight2(),this);
 //add or modify.   
         /////////////////////////////////////////////////////////
-        g.setColor(Color.red);
+        if(gameStarted)
+        {
+            Color controlPanel= new Color(73,107,115);
+        g.setColor(controlPanel);
+        g.fillRect(getX(0), getY(getHeight2()*3/4), getWidth2(), getHeight2()/4);
+        Color button = new Color(217,197,137);
+        
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 28));
+        
+        g.setColor(button);
+        g.fillRoundRect(getX(getWidth2()-105), getY(getHeight2()*13/16), 100, 50, 2, 2);
+        g.fillRoundRect(getX(getWidth2()-105), getY(getHeight2()*15/16), 100, 50, 2, 2);
+        g.setColor(Color.black);
+        g.drawString("STAND", getX(getWidth2()-100), getY(getHeight2()*13/16+45));
+        g.drawString("HIT", getX(getWidth2()-100), getY(getHeight2()*15/16+45));
+        
+        g.setColor(button);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+//        g.drawString("isClient is "+isClient, getX(5), getY(100));
+//        g.drawString("My Turn "+myTurn, getX(5), getY(120));
+//        g.drawString("dealerstand is "+dealer.getStanding(), getX(5), getY(140));
+//        g.drawString("roundEnd is "+roundEnd, getX(5), getY(160));
+        if(isClient)
+        {
+        
+        g.setColor(Color.red);
+        
+        g.fillOval(getX(5), getY(getHeight2()*7/8), getHeight2()/10, getHeight2()/10);
+        
+        
+        //System.out.println(getY(getHeight2()*13/16));
+        g.setColor(button);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(james.getName()+james.getAmtMoney(), getX(5), getY(getHeight2()*3/4+15));
+        
+        
+        int index=0;
+        for(Card temp: james.hand)
+        {
+            if(temp!=null)
+            {
+                        
+
+                
+        temp.drawCard(g,300 + index,getY(getHeight2()*13/16),8,8,temp.getValue(),temp.getSuite(),isClient);
+
+            index+=65;
+            }
+        }        
+        ////
+        g.setColor(button);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+<<<<<<< HEAD
         g.drawString(james.getName(), 200, 250);
                         int index=0;
 ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
+        g.drawString(goldfinger.getName(), getX(5), 200);
+                        int index2=0;
+
+        for(Card temp: goldfinger.hand)
+        {
+            if(temp!=null)
+            {
+           temp.drawCard(g,getX(5) ,210+ index2,3,3,temp.getValue(),temp.getSuite(),roundOver);
+            index2+=65;
+            }
+        }
+        }
+        else
+        {
+            g.setColor(button);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(james.getName(),getX(5),200);
+        int index=0;
+>>>>>>> refs/remotes/origin/master
         for(Card temp: james.hand)
         {
             if(temp!=null)
@@ -581,6 +870,7 @@ public class Network extends JFrame implements Runnable
 //                }
                   
                 
+<<<<<<< HEAD
               temp.drawCard(g,300 + index,300,5,5,temp.getValue(),temp.getSuite(),isClient,temp.getInPlay());
 
                   index+=170;
@@ -589,7 +879,112 @@ public class Network extends JFrame implements Runnable
     }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         g.setColor(Color.red);
+=======
+        temp.drawCard(g,getX(5) ,210+ index,3,3,temp.getValue(),temp.getSuite(),roundOver);
 
+            index+=65;
+            }
+        }        
+        ////
+        g.setColor(button);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(goldfinger.getName()+goldfinger.getAmtMoney(),getX(5), getY(getHeight2()*3/4+15));
+        int index2=0;
+        for(Card temp: goldfinger.hand)
+        {
+            if(temp!=null)
+            {
+           temp.drawCard(g,300 + index2,getY(getHeight2()*13/16),5,5,temp.getValue(),temp.getSuite(),!isClient);
+            index2+=65;
+            }
+        }
+        }
+        ///////////Display Dealer////////////
+        g.setColor(button);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString(dealer.getName(),getX(getWidth2()-105),200);
+        int index =0;
+        for(Card temp: dealer.hand)
+        {
+            boolean faceUp=true;
+            
+            if(temp!=null)
+            {
+                        if(index==0&&!roundOver)
+                            faceUp=false;
+                        
+>>>>>>> refs/remotes/origin/master
+
+                
+        temp.drawCard(g,getX(getWidth2()-50) ,210+ index,3,3,temp.getValue(),temp.getSuite(),faceUp);
+
+            index+=65;
+            }
+        }
+        g.setColor(button);
+        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        g.drawString("The Pot: "+thePot,getX(getWidth2()-getWidth2()/2),200);
+        ////////////////Table Directions/Title///////////////
+            g.setColor(Color.white);
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            int fontSize = (int)(tk.getScreenSize().getHeight()/1080*150);
+            Font title = new Font("Bodoni MT",Font.BOLD,fontSize);
+            g.setFont(title);
+            FontMetrics fontMetrics = g.getFontMetrics(title);
+            int xPos= (int) (getWidth2()/2-(fontMetrics.stringWidth("BLACKJACK")/2));
+            g.drawString("BLACKJACK", getX(xPos), getY(getHeight2()/2));
+            g.setColor(button);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            if(beforeDeal)
+            {
+                if(isClient)
+                    g.drawString("Hit the Deal Button to start the game", getX(xPos), getY(getHeight2()/2)+40);
+                else
+                    g.drawString("Wait for the other player to start the game",getX(xPos), getY(getHeight2()/2+40));              
+            }
+            else if(betTime)
+            {
+                if(isClient)
+                {
+                    if(myTurn)
+                    g.drawString("Click a Poker Chip to Bet its value", getX(xPos), getY(getHeight2()/2)+40);
+                    else
+                    g.drawString("Other player is betting...", getX(xPos), getY(getHeight2()/2)+40);    
+                }
+                else
+                {
+                    if(!myTurn)
+                        g.drawString("Other player is betting...", getX(xPos), getY(getHeight2()/2)+40);
+                    
+                    else
+                        g.drawString("Click a Poker Chip to Bet its value", getX(xPos), getY(getHeight2()/2)+40);
+                }
+            }
+            else if(hitTime)
+            {
+                if(isClient)
+                {
+                    if(!james.getStanding())
+                        g.drawString("Hit until you want to stop. Then click the Stand Button", getX(xPos), getY(getHeight2()/2)+40);
+                    if(james.getStanding())
+                        g.drawString("Other player hitting...", getX(xPos), getY(getHeight2()/2)+40);
+                }
+                else
+                {
+                    if(!james.getStanding())
+                        g.drawString("Other player hitting...", getX(xPos), getY(getHeight2()/2)+40);
+                    else if(!goldfinger.getStanding())
+                        g.drawString("Hit until you want to stop. Then click the Stand Button", getX(xPos), getY(getHeight2()/2)+40);
+                    
+                        
+                }
+            }
+            else if(roundOver)
+            {
+                g.drawString("Hit the new Round Button to start next round", getX(xPos), getY(getHeight2()/2)+40);
+            }
+        //////////win/bust/////////
+        g.setColor(Color.red);
         if(jWin)
         {
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
@@ -600,6 +995,7 @@ public class Network extends JFrame implements Runnable
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
             g.drawString("Bond Bust", 600, 250);
         }
+<<<<<<< HEAD
         /////////////////////////////////////////////////////////
         g.setColor(Color.red);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
@@ -622,6 +1018,9 @@ public class Network extends JFrame implements Runnable
             }
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
+        /////////////////////////////////////////////////////////        
+>>>>>>> refs/remotes/origin/master
         g.setColor(Color.red);
         if(gWin)
         {
@@ -633,39 +1032,64 @@ public class Network extends JFrame implements Runnable
             g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
             g.drawString("Goldfinger Bust", 600, 270);
         }
+        /////////////////////////////////////////////////////////        
+        g.setColor(Color.red);
+        if(dWin)
+        {
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Dealer Wins", 600, 220);
+        }
+        if(dBust)
+        {
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.drawString("Dealer Bust", 600, 270);
+        }
+        }
         /////////////////////////////////////////////////////////
         if (!gameStarted)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("Not Connected",100,150);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 50));
+            g.setColor(Color.white);
+            g.drawString("Not Connected",getX(800),getY(600));
             
         }
         else if (isClient)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("The Client",100,150);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 40));
+            g.setColor(Color.white);
+            g.drawString("The Client",getX(0),getY(40));
         }
         else
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("The Server",100,150);
+            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 40));
+            g.setColor(Color.white);
+            g.drawString("The Server",getX(0),getY(40));
         }            
 
 
+//        {
+//            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+//            g.setColor(Color.black);
+//            g.drawString("Client value " + clientValue,100,200);
+//        }
+//
+//        {
+//            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+//            g.setColor(Color.black);
+//            g.drawString("Server value " + serverValue,100,300);
+//            
+//        }
+        if(!gameStarted)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("Client value " + clientValue,100,200);
-        }
-
-        {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.setColor(Color.black);
-            g.drawString("Server value " + serverValue,100,300);
+            Toolkit tk = Toolkit.getDefaultToolkit();
+            int fontSize = (int)(tk.getScreenSize().getHeight()/1080*200);
+            Font title = new Font("Bodoni MT",Font.BOLD,fontSize);
+            g.setFont(title);
+            FontMetrics fontMetrics = g.getFontMetrics(title);
+            int xPos= (int) (getWidth2()/2-(fontMetrics.stringWidth("BLACKJACK")/2));
+            g.drawString("BLACKJACK", getX(xPos), getY(getHeight2()/2));
             
+<<<<<<< HEAD
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //shows rules
@@ -704,17 +1128,20 @@ public class Network extends JFrame implements Runnable
     	}
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+=======
+>>>>>>> refs/remotes/origin/master
             try
             {
                 g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-                g.setColor(Color.black);
-                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(10), getY(20));
-                g.drawString("Enter IP address: " + ipAddress, getX(10), getY(60));
+                g.setColor(Color.white);
+                g.drawString("Your IP address: " + InetAddress.getLocalHost().getHostAddress(), getX(5), getY(getHeight2()-5));
+                g.drawString("Enter IP address: " + ipAddress, getX(305), getY(getHeight2()-5));
             }
             catch (UnknownHostException e)
             {
                 e.printStackTrace();
             }
+        }
                     
         // put all paint commands above this line
         gOld.drawImage(image, 0, 0, null);
@@ -758,6 +1185,51 @@ public class Network extends JFrame implements Runnable
 
             reset();
         }
+        if(betTime&&thePot==2*myBet&&thePot>0)
+        {
+            betTime=false;
+            hitTime=true;
+        }
+        if(isClient&&hitTime&&james.getStanding()==false)
+        {
+            if(james.getHandValue()>=21)
+            {
+                james.setStanding(true);
+                System.out.println("sending from client");
+                ClientHandler.sendStand();
+            }
+        }
+        else if(!isClient&&hitTime&&goldfinger.getStanding()==false)
+        {
+           if(goldfinger.getHandValue()>=21)
+            {
+                goldfinger.setStanding(true);
+                System.out.println("sending from server");
+                ServerHandler.sendStand();
+            } 
+        }
+        if(isClient&&myTurn&&james.getStanding()&&goldfinger.getStanding()&&!roundOver)
+        {
+            if(dealer.getHandValue()<17)
+            {
+                int hitCardIndex=0;
+                hitCardIndex=dealer.hit();
+                System.out.println("sending from client");
+                ClientHandler.sendDealerHit(hitCardIndex);
+                
+            }
+            else
+            {
+                dealer.setStanding(true);
+                System.out.println("sending from client");
+                ClientHandler.sendDealerStand();
+            }
+        }
+        if(dealer.getStanding())
+            roundEnd=true;
+        
+        if(roundEnd)
+        {
         if(james.getHandValue()==21)
                     jWin=true;
         else if(james.getHandValue()>21)
@@ -766,6 +1238,55 @@ public class Network extends JFrame implements Runnable
             gWin=true;
         else if(goldfinger.getHandValue()>21)
             gBust=true;
+        if(dealer.getHandValue()==21)
+            dWin=true;
+        else if(dealer.getHandValue()>21)
+            dBust=true;
+        else if(!jWin&&!gWin&&!dWin)
+        {
+            
+            if(dealer.getHandValue()<21&&(dealer.getHandValue()>james.getHandValue()||jBust)&&(dealer.getHandValue()>goldfinger.getHandValue()||gBust))
+                dWin=true;
+            else if(james.getHandValue()<21&&(james.getHandValue()>dealer.getHandValue()||dBust)&&(james.getHandValue()>goldfinger.getHandValue()||gBust))
+                jWin=true;
+            else if(goldfinger.getHandValue()<21&&(goldfinger.getHandValue()>james.getHandValue()||jBust)&&(goldfinger.getHandValue()>dealer.getHandValue()||dBust))
+                gWin=true;
+        }
+        
+        if(jWin)
+        {
+            james.setAmtMoney(james.getAmtMoney()+thePot);
+            thePot=0;
+            roundEnd=false;
+            roundOver=true;
+        }
+        else if(gWin)
+        {
+            goldfinger.setAmtMoney(goldfinger.getAmtMoney()+thePot);
+            thePot=0;
+            roundEnd=false;
+            roundOver=true;
+        }        
+        else if(dWin)
+        {
+            roundEnd=false;
+            roundOver=true;
+            thePot=0;
+        }
+        else
+        {
+            thePot=0;
+            roundEnd=false;
+            roundOver=true;
+        }
+        
+        
+            
+        
+        
+        
+        
+        }
         
         
     }

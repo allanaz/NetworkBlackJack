@@ -7,9 +7,10 @@ public class Player {
     private String name;
     public ArrayList<Card> hand = new ArrayList<Card>();
     private int amtMoney;
-    public enum winState {UNDER,TWENTYONE,BUST}
-    private winState status;
+//    public enum winState {UNDER,TWENTYONE,BUST}
+//    private winState status;
     private boolean inGame;
+    private boolean standing;
      
     public Player(String _name,int _money)
     {
@@ -41,6 +42,7 @@ public class Player {
     public void setCardDoIt(Card _card)
     {
         hand.add(_card);
+        _card.setInPlay(true);
     }
     public void printCards()
     {
@@ -72,12 +74,17 @@ public class Player {
         boolean hit=false;
         while (hit ==false)
         {
+<<<<<<< HEAD
             
              int randomCard=(int)(Math.random()*52);
              if(!Card.cards[randomCard].getInPlay())
+=======
+             int randomCard=(int)(Math.random()*Card.numCardsInDeck);
+             if(Card.cards[randomCard].getInPlay()==false)
+>>>>>>> refs/remotes/origin/master
              {
                 System.out.println(Card.cards[randomCard]);
-                Card.cards[randomCard].setInPlay(true);
+                //Card.cards[randomCard].setInPlay(true);
                 addCard(Card.cards[randomCard]);
                 
                 hit=true;
@@ -88,12 +95,16 @@ public class Player {
          return 55;
         
     }
+<<<<<<< HEAD
 
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public int getPlayerCard()
+=======
+     public int getPlayerCard()
+>>>>>>> refs/remotes/origin/master
     {
         boolean hit=false;
         while (hit ==false)
@@ -102,12 +113,20 @@ public class Player {
              
              if(Card.cards[randomCard].getInPlay())
              {
+<<<<<<< HEAD
                  
                  if(this.hand.contains(Card.cards[randomCard]))
                  {
                     System.out.println(Card.cards[randomCard]);
                     Card.cards[randomCard].setInPlay(false);
                     this.hand.remove(Card.cards[randomCard]);
+=======
+                 if(hand.contains(Card.cards[randomCard]))
+                 {
+                    System.out.println(Card.cards[randomCard]);
+                    Card.cards[randomCard].setInPlay(false);
+                    hand.remove(Card.cards[randomCard]);
+>>>>>>> refs/remotes/origin/master
                     //addCard(Card.cards[randomCard]);
 
                     hit=true;
@@ -119,7 +138,11 @@ public class Player {
         }
         return 12;
     }
+<<<<<<< HEAD
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
+    
+>>>>>>> refs/remotes/origin/master
     public void setPlayerCard(int c)
     {
         boolean hit=false;
@@ -142,10 +165,13 @@ public class Player {
         
     }
 
+<<<<<<< HEAD
     ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+=======
+>>>>>>> refs/remotes/origin/master
     public int getHandValue()
     {
         int handValue=0;
@@ -182,7 +208,14 @@ public class Player {
     {
         return amtMoney;
     }
+<<<<<<< HEAD
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+=======
+    public void setAmtMoney(int _money)
+    {
+        amtMoney=_money;
+    }
+>>>>>>> refs/remotes/origin/master
     public Card getCard(int index)
     {
         return hand.get(index);
@@ -194,6 +227,14 @@ public class Player {
     public void setInGame(boolean _inGame)
     {
         inGame=_inGame;
+    }
+    public void setStanding(boolean _stand)
+    {
+        standing=_stand;
+    }
+    public boolean getStanding()
+    {
+        return standing;
     }
     
 }

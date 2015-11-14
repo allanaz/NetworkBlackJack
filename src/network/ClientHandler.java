@@ -69,21 +69,105 @@ public class ClientHandler
 			Network.myTurn = false;
 		}        
     }
-    public static void sendPieceMove(int val)
+    /*
+    How to send data:
+    Server.recievePiece Move takes 4 values values are -1 if they are not used
+    value 0 = 1st card to be added
+    value 1 = second Card to be added
+    value 3 = player to be added to (0 for dealer, 1 for other player,2 for self)
+    value 4 = thePot
+    value 5 = stand (if !=-1, then myturn=false)
+    * value 6 = theplayer's money
+    * value 7 = the other players money
+    * 
+    */
+    public static void sendStand()
+    {
+        if(connected)
+        {
+            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1+":"+-1+":"+-1);
+            Network.myTurn=false;
+        }
+    }
+    public static void sendDealerStand()
+    {
+        if(connected)
+        {
+            serverOut.println(-1 + ":" + -1 + ":" + 0 +":"+-1 + ":" + 1+":"+-1+":"+-1);
+        }
+    }
+    public static void sendHit(int val)
     {
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(-1 + ":" + val);
+			//serverOut.println(-1 + ":" + val + ":" + 0);
+                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1+":"+-1+":"+-1 );
+			//Network.myTurn = false;
+		}        
+    }
+    public static void sendDealerHit(int val)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			//serverOut.println(-1 + ":" + val + ":" + 0);
+                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1+":"+-1+":"+-1 );
+			//Network.myTurn = false;
+		}        
+    }
+    public static void sendBet(int val)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			//serverOut.println(-1 + ":" + val + ":" + 0);
+                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
-    public static void sendPieceMove(int val,int val2)
+    public static void sendDeal(int val,int val2)
     {
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val2 + ":" + val);
+			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			//Network.myTurn = false;
+		}        
+    }
+    public static void sendDealerDeal(int val,int val2)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			//Network.myTurn = false;
+		}        
+    }
+    public static void sendOtherPlayerDeal(int val,int val2)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			//Network.myTurn = false;
+		}        
+    }
+    public static void sendMoneyEffect(int val,int val2)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(-1 + ":" + -1 + ":" + 1 + ":" + -1+":"+-1+":"+val+":"+val2);
+			//Network.myTurn = false;
+		}        
+    }
+    public static void sendPieceMove(int val,int val2,int val3)
+    {
+		if (connected)
+		{
+//add or modify.                    
+			serverOut.println(val2 + ":" + val + ":" + val3);
 			Network.myTurn = false;
 		}        
     }
@@ -121,13 +205,97 @@ public class ClientHandler
 							// row:col:initrow:initcol
 							int ypost = Integer.parseInt(inputLine.split(":")[0]);
 							int xpost = Integer.parseInt(inputLine.split(":")[1]);
+                                                        int zpost = Integer.parseInt(inputLine.split(":")[2]);
+                                                        int wpost = Integer.parseInt(inputLine.split(":")[3]);
+                                                        int vpost = Integer.parseInt(inputLine.split(":")[4]);
+                                                        int upost = Integer.parseInt(inputLine.split(":")[5]);
+                                                        int tpost = Integer.parseInt(inputLine.split(":")[6]);
+                                                        
+                                                        if(ypost!=-1)
+                                                        {
+                                                            if(xpost!=-1)
+                                                            {
+                                                                if(zpost==0)
+                                                                {
+                                                                    Network.dealer.hand.add(Card.cards[ypost]);
+                                                                    Card.cards[ypost].setInPlay(true);
+                                                                    Network.dealer.hand.add(Card.cards[xpost]);
+                                                                    Card.cards[xpost].setInPlay(true);
+                                                                }
+                                                                if(zpost==1)
+                                                                {
+                                                                    Network.james.hand.add(Card.cards[ypost]);
+                                                                    Card.cards[ypost].setInPlay(true);
+                                                                    Network.james.hand.add(Card.cards[xpost]);
+                                                                    Card.cards[xpost].setInPlay(true);
+                                                                }
+                                                                if(zpost==2)
+                                                                {
+                                                                    Network.goldfinger.hand.add(Card.cards[ypost]);
+                                                                    Card.cards[ypost].setInPlay(true);
+                                                                    Network.goldfinger.hand.add(Card.cards[xpost]);
+                                                                    Card.cards[xpost].setInPlay(true);
+                                                                }
+
+                                                            }
+                                                            if(xpost==-1)
+                                                            {
+                                                                if(zpost==0)
+                                                                {
+                                                                    Network.dealer.hand.add(Card.cards[ypost]);
+                                                                    Card.cards[ypost].setInPlay(true);
+                                                                }
+                                                                if(zpost==1)
+                                                                {
+                                                                    Network.james.hand.add(Card.cards[ypost]);
+                                                                    Card.cards[ypost].setInPlay(true);
+                                                                }
+                                                                if(zpost==2)
+                                                                {
+                                                                    Network.goldfinger.hand.add(Card.cards[ypost]);
+                                                                    Card.cards[ypost].setInPlay(true);
+                                                                }
+
+                                                            }
+
+                                                        }
+                                                        if(ypost==-1)
+                                                        {
+                                                            if(vpost==-1)
+                                                            {
+                                                            Network.thePot=wpost;
+                                                            Network.myTurn = true;
+                                                            if(upost!=-1)
+                                                            {
+                                                                Network.goldfinger.setAmtMoney(upost);
+                                                                Network.james.setAmtMoney(tpost);
+                                                            }
+                                                            }
+                                                            if(vpost==1)
+                                                            {
+                                                                Network.myTurn = true;
+                                                                Network.goldfinger.setStanding(true);
+                                                            }
+                                                            
+                                                        }
                                                         
                                                         //Network.serverValue=ypost;
-                                                        Network.goldfinger.hand.add(Card.cards[ypost]);
-                                                        if(xpost!=-1)
-                                                            Network.goldfinger.hand.add(Card.cards[xpost]);
+//                                                        if(ypost>=0)
+//                                                        {
+//                                                        Network.goldfinger.hand.add(Card.cards[ypost]);
+//                                                        Card.cards[ypost].setInPlay(true);
+//                                                        if(xpost!=-1)
+//                                                        {
+//                                                            Network.goldfinger.hand.add(Card.cards[xpost]);
+//                                                        Card.cards[xpost].setInPlay(true);
+//                                                        }
+//                                                        }
+//                                                        else if(ypost==-3)
+//                                                        {
+//                                                            Network.thePot=xpost;
+//                                                        }
 
-                                                        Network.myTurn = true;
+                                                        //Network.myTurn = true;
 						}
 						catch (NumberFormatException e)
 						{
