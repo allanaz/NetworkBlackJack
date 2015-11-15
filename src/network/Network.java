@@ -59,6 +59,11 @@ public class Network extends JFrame implements Runnable
     PokerButtons useButton;
     PokerButtons start;
     PokerButtons newRound;
+    PokerButtons bet;
+    
+    PokerButtons pot;
+    PokerButtons subBet;
+    
     Chips chipOne;
     Chips chipFive;
     Chips chipTen;
@@ -207,16 +212,10 @@ public class Network extends JFrame implements Runnable
                     }
                     if(betTime)
                     {
-                        
-                        if(chipOne.buttonClicked(xpos, ypos))
+                        if(bet.buttonClicked(xpos, ypos))
                         {
-                            System.out.println("hitChip");
-                            if(isClient)
-                            {
-                                
-                                myBetAmt+=chipOne.getValue();
-                                
-                                if(myBetAmt>=thePot-myBet*2)
+                            System.out.println("bet button");
+                            if(isClient && myBetAmt>=thePot-myBet*2)
                                 {
                                 myBet+=myBetAmt;
                                 thePot+=myBetAmt;
@@ -226,14 +225,8 @@ public class Network extends JFrame implements Runnable
                                 james.setAmtMoney(james.getAmtMoney()-myBetAmt);
                                 myBetAmt=0;
                                 } 
-                                
-                            }
-                            else
+                            else if(myBetAmt>=thePot-myBet*2)
                             {
-                                myBetAmt+=chipOne.getValue();
-                                
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
                                 myBet+=myBetAmt;
                                 thePot+=myBetAmt;
                                 
@@ -241,7 +234,43 @@ public class Network extends JFrame implements Runnable
                                 ServerHandler.sendBet(thePot); 
                                 goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
                                 myBetAmt=0;
-                                }
+                            }
+                        }
+                        
+                        if(chipOne.buttonClicked(xpos, ypos))
+                        {
+                            System.out.println("hitChip");
+                            if(isClient)
+                            {
+                                
+                                myBetAmt+=chipOne.getValue();
+                                
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from client");
+//                                ClientHandler.sendBet(thePot); 
+//                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                } 
+                                
+                            }
+                            else
+                            {
+                                myBetAmt+=chipOne.getValue();
+                                
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from server");
+//                                ServerHandler.sendBet(thePot); 
+//                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                             }
                         }
                         if(chipFive.buttonClicked(xpos, ypos))
@@ -260,16 +289,16 @@ public class Network extends JFrame implements Runnable
 //                                }
                                 myBetAmt+=chipFive.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from client");
-                                ClientHandler.sendBet(thePot); 
-                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from client");
+//                                ClientHandler.sendBet(thePot); 
+//                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                                 
                             }
                             else
@@ -278,16 +307,16 @@ public class Network extends JFrame implements Runnable
                                 
                                 myBetAmt+=chipFive.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from server");
-                                ServerHandler.sendBet(thePot); 
-                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from server");
+//                                ServerHandler.sendBet(thePot); 
+//                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                                 
                                 
                             }
@@ -299,16 +328,16 @@ public class Network extends JFrame implements Runnable
                             {
                                 myBetAmt+=chipTen.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from client");
-                                ClientHandler.sendBet(thePot); 
-                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from client");
+//                                ClientHandler.sendBet(thePot); 
+//                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                                  
                                 
                             }
@@ -316,16 +345,16 @@ public class Network extends JFrame implements Runnable
                             {
                                 myBetAmt+=chipTen.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from server");
-                                ServerHandler.sendBet(thePot); 
-                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from server");
+//                                ServerHandler.sendBet(thePot); 
+//                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                             }
                         }
                         if(chipTwenty.buttonClicked(xpos, ypos))
@@ -335,32 +364,32 @@ public class Network extends JFrame implements Runnable
                             {
                                 myBetAmt+=chipTwenty.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from client");
-                                ClientHandler.sendBet(thePot); 
-                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from client");
+//                                ClientHandler.sendBet(thePot); 
+//                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                                 
                             }
                             else
                             {
                                 myBetAmt+=chipTwenty.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from server");
-                                ServerHandler.sendBet(thePot); 
-                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from server");
+//                                ServerHandler.sendBet(thePot); 
+//                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                             }
                         }
                         if(chipFifty.buttonClicked(xpos, ypos))
@@ -370,32 +399,32 @@ public class Network extends JFrame implements Runnable
                             {
                                 myBetAmt+=chipFifty.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from client");
-                                ClientHandler.sendBet(thePot); 
-                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from client");
+//                                ClientHandler.sendBet(thePot); 
+//                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                                 
                             }
                             else
                             {
                                 myBetAmt+=chipFifty.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from server");
-                                ServerHandler.sendBet(thePot); 
-                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from server");
+//                                ServerHandler.sendBet(thePot); 
+//                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                             }
                         }
                         if(chipHundred.buttonClicked(xpos, ypos))
@@ -405,32 +434,32 @@ public class Network extends JFrame implements Runnable
                             {
                                 myBetAmt+=chipHundred.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from client");
-                                ClientHandler.sendBet(thePot); 
-                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from client");
+//                                ClientHandler.sendBet(thePot); 
+//                                james.setAmtMoney(james.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                                 
                             }
                             else
                             {
                                 myBetAmt+=chipHundred.getValue();
                                 
-                                if(myBetAmt>=thePot-myBet*2)
-                                {
-                                myBet+=myBetAmt;
-                                thePot+=myBetAmt;
-                                
-                                System.out.println("sending from server");
-                                ServerHandler.sendBet(thePot); 
-                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
-                                myBetAmt=0;
-                                }
+//                                if(myBetAmt>=thePot-myBet*2)
+//                                {
+//                                myBet+=myBetAmt;
+//                                thePot+=myBetAmt;
+//                                
+//                                System.out.println("sending from server");
+//                                ServerHandler.sendBet(thePot); 
+//                                goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
+//                                myBetAmt=0;
+//                                }
                             }
                         }
                         
@@ -1077,21 +1106,21 @@ public class Network extends JFrame implements Runnable
 //        else
             chipOne= new Chips("Match");
         
-        chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
+        //chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
         
         chipFive = new Chips(5);
-        chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
+        //chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         chipTen = new Chips(10);
-        chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
+        //chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
         chipTwenty = new Chips(20);
-        chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
+        //chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         chipFifty = new Chips(50);
-        chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
+        //chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         
         chipHundred = new Chips(100);
-        chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
+        //chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         
 //        for(Chips temp:chips)
 //        {
@@ -1107,8 +1136,8 @@ public class Network extends JFrame implements Runnable
 //            
 //        }
        
-        g.setColor(button);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+        //g.setColor(button);
+        //g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
 //        g.drawString("isClient is "+isClient, getX(5), getY(100));
 //        g.drawString("My Turn "+myTurn, getX(5), getY(120));
 //        g.drawString("dealerstand is "+dealer.getStanding(), getX(5), getY(140));
@@ -1117,6 +1146,10 @@ public class Network extends JFrame implements Runnable
         {
             if(myTurn&&betTime)
             {
+                subBet= new PokerButtons();
+                subBet.drawTextButton(g, getX(getWidth2()/2-75), 260, 150, 50, button, "My Bet: "+myBetAmt);
+                bet = new PokerButtons();
+                bet.drawButton(g,getX(getWidth2()/2+85), 260, 50, 50, button, "BET");
                 int matchBet=(thePot-myBet*2)-myBetAmt;
                 if(matchBet>=james.getAmtMoney())
                     chipOne = new Chips("All In");
@@ -1128,7 +1161,7 @@ public class Network extends JFrame implements Runnable
         
         chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
-        if(james.getAmtMoney()>=chipFive.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipFive.getValue())
         {
         chipFive = new Chips(5);
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
@@ -1139,7 +1172,7 @@ public class Network extends JFrame implements Runnable
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
-        if(james.getAmtMoney()>=chipTen.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipTen.getValue())
         {
         chipTen = new Chips(10);
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
@@ -1150,7 +1183,7 @@ public class Network extends JFrame implements Runnable
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
-        if(james.getAmtMoney()>=chipTwenty.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipTwenty.getValue())
         {
         chipTwenty = new Chips(20);
         chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
@@ -1161,7 +1194,7 @@ public class Network extends JFrame implements Runnable
             chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
             
         }
-        if(james.getAmtMoney()>=chipFifty.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipFifty.getValue())
         {
         chipFifty = new Chips(50);
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
@@ -1171,7 +1204,7 @@ public class Network extends JFrame implements Runnable
             chipFifty = new Chips("");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
-        if(james.getAmtMoney()>=chipHundred.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipHundred.getValue())
         {
         chipHundred = new Chips(100);
         chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
@@ -1221,6 +1254,10 @@ public class Network extends JFrame implements Runnable
         {
             if(myTurn&&betTime)
             {
+                subBet= new PokerButtons();
+                subBet.drawTextButton(g, getX(getWidth2()/2-75), 260, 150, 50, button, "My Bet: "+myBetAmt);
+                bet = new PokerButtons();
+                bet.drawButton(g,getX(getWidth2()/2+85), 260, 50, 50, button, "BET");
                 int matchBet=(thePot-myBet*2)-myBetAmt;
                 if(matchBet>=goldfinger.getAmtMoney())
                     chipOne = new Chips("All In");
@@ -1232,7 +1269,7 @@ public class Network extends JFrame implements Runnable
         
         chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
-        if(goldfinger.getAmtMoney()>=chipFive.getValue())
+        if(goldfinger.getAmtMoney()-myBetAmt>=chipFive.getValue())
         {
         chipFive = new Chips(5);
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
@@ -1243,7 +1280,7 @@ public class Network extends JFrame implements Runnable
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
-        if(goldfinger.getAmtMoney()>=chipTen.getValue())
+        if(goldfinger.getAmtMoney()-myBetAmt>=chipTen.getValue())
         {
         chipTen = new Chips(10);
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
@@ -1254,7 +1291,7 @@ public class Network extends JFrame implements Runnable
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
-        if(goldfinger.getAmtMoney()>=chipTwenty.getValue())
+        if(goldfinger.getAmtMoney()-myBetAmt>=chipTwenty.getValue())
         {
         chipTwenty = new Chips(20);
         chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
@@ -1265,7 +1302,7 @@ public class Network extends JFrame implements Runnable
             chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
             
         }
-        if(goldfinger.getAmtMoney()>=chipFifty.getValue())
+        if(goldfinger.getAmtMoney()-myBetAmt>=chipFifty.getValue())
         {
         chipFifty = new Chips(50);
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
@@ -1275,7 +1312,7 @@ public class Network extends JFrame implements Runnable
             chipFifty = new Chips("");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
-        if(goldfinger.getAmtMoney()>=chipHundred.getValue())
+        if(goldfinger.getAmtMoney()-myBetAmt>=chipHundred.getValue())
         {
         chipHundred = new Chips(100);
         chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
@@ -1339,8 +1376,10 @@ public class Network extends JFrame implements Runnable
         }
         g.setColor(button);
         g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString("The Pot: "+thePot,getX(getWidth2()-getWidth2()/2),200);
-        g.drawString("My BetAmt: "+myBetAmt,getX(getWidth2()-getWidth2()/2),220);
+        pot = new PokerButtons();
+        pot.drawTextButton(g, getX(getWidth2()/2-75), 200, 150, 50, button, "The Pot: "+thePot);
+        //g.drawString("The Pot: "+thePot,getX(getWidth2()-getWidth2()/2),200);
+       // g.drawString("My BetAmt: "+myBetAmt,getX(getWidth2()-getWidth2()/2),220);
         
         ////////////////Table Directions/Title///////////////
             g.setColor(Color.white);
