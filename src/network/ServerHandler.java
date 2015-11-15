@@ -64,7 +64,7 @@ public class ServerHandler
     {
         if(connected)
         {
-            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1);
+            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1+":"+-1+":"+-1);
             Network.myTurn=false;
         }
     }
@@ -74,7 +74,7 @@ public class ServerHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1+":"+-1+":"+-1 );
 			//Network.myTurn = false;
 		}        
     }
@@ -84,7 +84,7 @@ public class ServerHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1+":"+-1+":"+-1 );
 			Network.myTurn = false;
 		}        
     }
@@ -94,7 +94,7 @@ public class ServerHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1);
+                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -103,7 +103,7 @@ public class ServerHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -112,7 +112,7 @@ public class ServerHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -130,7 +130,7 @@ public class ServerHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -265,7 +265,11 @@ public class ServerHandler
                                 if(wpost!=-1)
                                 {
                                 Network.thePot=wpost;
-                                Network.myTurn = true;
+                                if(Network.thePot==2*Network.myBet)
+                                Network.myTurn = false;
+                                else 
+                                    Network.myTurn=true;
+                                
                                 }
                                 if(wpost==-1)
                                 {

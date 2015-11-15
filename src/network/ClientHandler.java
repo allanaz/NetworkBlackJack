@@ -123,7 +123,10 @@ public class ClientHandler
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
                         serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1);
-			Network.myTurn = false;
+                        if(Network.thePot==2*Network.myBet)
+			Network.myTurn = true;
+                        else
+                            Network.myTurn=false;
 		}        
     }
     public static void sendDeal(int val,int val2)
@@ -203,6 +206,15 @@ public class ClientHandler
 							}
 //add or modify.
 							// row:col:initrow:initcol
+//                                                        How to send data:
+                                                    //    Server.recievePiece Move takes 4 values values are -1 if they are not used
+                                                    //    value 0 = 1st card to be added
+                                                    //    value 1 = second Card to be added
+                                                    //    value 3 = player to be added to (0 for dealer, 1 for other player,2 for self)
+                                                    //    value 4 = thePot
+                                                    //    value 5 = stand (if !=-1, then myturn=false)
+                                                    //    * value 6 = theplayer's money
+                                                    //    * value 7 = the other players money
 							int ypost = Integer.parseInt(inputLine.split(":")[0]);
 							int xpost = Integer.parseInt(inputLine.split(":")[1]);
                                                         int zpost = Integer.parseInt(inputLine.split(":")[2]);
@@ -261,21 +273,44 @@ public class ClientHandler
                                                         }
                                                         if(ypost==-1)
                                                         {
-                                                            if(vpost==-1)
+                                                            if(wpost!=-1)
                                                             {
                                                             Network.thePot=wpost;
                                                             Network.myTurn = true;
-                                                            if(upost!=-1)
+                                                            }
+                                                            if(wpost==-1)
                                                             {
-                                                                Network.goldfinger.setAmtMoney(upost);
-                                                                Network.james.setAmtMoney(tpost);
+                                                                if(upost!=-1)
+                                                                {
+                                                                    Network.goldfinger.setAmtMoney(upost);
+                                                                    Network.james.setAmtMoney(tpost);
+                                                                }
+                                                                else
+                                                                {
+                                                                    if(vpost==1)
+                                                                    {
+                                                                        Network.myTurn = true;
+                                                                        Network.goldfinger.setStanding(true);
+                                                                        Network.hitTime=false;
+                                                                    }
+                                                                    else
+                                                                        Network.myTurn=false;
+                                                                        
+                                                                    
+                                                                }
                                                             }
-                                                            }
-                                                            if(vpost==1)
-                                                            {
-                                                                Network.myTurn = true;
-                                                                Network.goldfinger.setStanding(true);
-                                                            }
+                                                
+//                                                            if(upost!=-1)
+//                                                            {
+//                                                                Network.goldfinger.setAmtMoney(upost);
+//                                                                Network.james.setAmtMoney(tpost);
+//                                                            }
+//                                                            }
+//                                                            if(vpost==1)
+//                                                            {
+//                                                                Network.myTurn = true;
+//                                                                Network.goldfinger.setStanding(true);
+//                                                            }
                                                             
                                                         }
                                                         

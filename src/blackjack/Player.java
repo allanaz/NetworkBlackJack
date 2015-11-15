@@ -140,6 +140,8 @@ public class Player {
         int handValue=0;
         for(Card temp:hand)
         {
+            if(temp.getSuite()!=Card.Suite.SPECIAL)
+            {
             if(temp.getValue()>9)
                 handValue+=10;
             else if(temp.getValue()>1&&temp.getValue()<=9)
@@ -150,6 +152,7 @@ public class Player {
                     handValue+=1;
                 else
                     handValue+=11;
+            }
             }
         }
         return handValue;
