@@ -11,6 +11,7 @@ import java.awt.event.*;
 import java.awt.image.BufferedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
+import javax.sound.sampled.*;
 import java.io.FileInputStream;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -48,9 +49,12 @@ public class Network extends JFrame implements Runnable
     static boolean beforeDeal= true;
     static boolean roundEnd= false;
     static boolean roundOver=false;
+    //static boolean serverReady=true;
     public static int thePot=0;
     public static int myBet=0;
     public static int myBetAmt=0;
+    
+    sound bondTheme = new sound("JamesBond.wav");
     
     PokerButtons connectServer;
     PokerButtons connectClient;
@@ -157,22 +161,37 @@ public class Network extends JFrame implements Runnable
                         System.out.println("hitBox");
                         if(isClient&&hitTime)
                         {
+                            int numSpecial=0;
                             for(Card temp :james.hand)
                             {
                                 if(temp.getSuite()==Card.Suite.SPECIAL)
                                 {
                                     temp.doEffect(james, goldfinger);
+                                    numSpecial++;
                                 }
+                            }
+                            ClientHandler.sendMoneyEffect(james.getAmtMoney(), goldfinger.getAmtMoney(),numSpecial);
+                            for(int i=0;i<numSpecial;i++)
+                            {
+                                james.removeSpecialCard();
                             }
                         }
                         else if(hitTime)
                         {
+                            int numSpecial=0;
                             for(Card temp :goldfinger.hand)
                             {
                                 if(temp.getSuite()==Card.Suite.SPECIAL)
                                 {
                                     temp.doEffect(goldfinger, james);
+                                    numSpecial++;
+                                    
                                 }
+                            }
+                            ServerHandler.sendMoneyEffect(goldfinger.getAmtMoney(), james.getAmtMoney(),numSpecial);
+                            for(int i=0;i<numSpecial;i++)
+                            {
+                                goldfinger.removeSpecialCard();
                             }
                         }
                         
@@ -208,30 +227,31 @@ public class Network extends JFrame implements Runnable
 
                         beforeDeal=false;
                         betTime=true;
+                        
                         }
                     }
                     if(betTime)
                     {
-                        if(bet.buttonClicked(xpos, ypos))
+                        if(bet!=null&&bet.buttonClicked(xpos, ypos))
                         {
                             System.out.println("bet button");
-                            if(isClient && myBetAmt>=thePot-myBet*2)
+                            if(isClient &&( myBetAmt>=thePot-myBet*2||james.getAmtMoney()-myBetAmt==0))
                                 {
                                 myBet+=myBetAmt;
                                 thePot+=myBetAmt;
                                 
                                 System.out.println("sending from client");
-                                ClientHandler.sendBet(thePot); 
+                                ClientHandler.sendBet(myBetAmt); 
                                 james.setAmtMoney(james.getAmtMoney()-myBetAmt);
                                 myBetAmt=0;
                                 } 
-                            else if(myBetAmt>=thePot-myBet*2)
+                            else if(myBetAmt>=thePot-myBet*2||goldfinger.getAmtMoney()-myBetAmt==0)
                             {
                                 myBet+=myBetAmt;
                                 thePot+=myBetAmt;
                                 
                                 System.out.println("sending from server");
-                                ServerHandler.sendBet(thePot); 
+                                ServerHandler.sendBet(myBetAmt); 
                                 goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
                                 myBetAmt=0;
                             }
@@ -273,7 +293,7 @@ public class Network extends JFrame implements Runnable
 //                                }
                             }
                         }
-                        if(chipFive.buttonClicked(xpos, ypos))
+                        if(chipFive.buttonClicked(xpos, ypos)&&chipFive.getLabel()!="")
                         {
                             System.out.println("hitChip");
                             if(isClient)
@@ -321,7 +341,7 @@ public class Network extends JFrame implements Runnable
                                 
                             }
                         }
-                        if(chipTen.buttonClicked(xpos, ypos))
+                        if(chipTen.buttonClicked(xpos, ypos)&&chipTen.getLabel()!="")
                         {
                             System.out.println("hitChip");
                             if(isClient)
@@ -357,7 +377,7 @@ public class Network extends JFrame implements Runnable
 //                                }
                             }
                         }
-                        if(chipTwenty.buttonClicked(xpos, ypos))
+                        if(chipTwenty.buttonClicked(xpos, ypos)&&chipTwenty.getLabel()!="")
                         {
                             System.out.println("hitChip");
                             if(isClient)
@@ -392,7 +412,7 @@ public class Network extends JFrame implements Runnable
 //                                }
                             }
                         }
-                        if(chipFifty.buttonClicked(xpos, ypos))
+                        if(chipFifty.buttonClicked(xpos, ypos)&&chipFifty.getLabel()!="")
                         {
                             System.out.println("hitChip");
                             if(isClient)
@@ -427,7 +447,7 @@ public class Network extends JFrame implements Runnable
 //                                }
                             }
                         }
-                        if(chipHundred.buttonClicked(xpos, ypos))
+                        if(chipHundred.buttonClicked(xpos, ypos)&&chipHundred.getLabel()!="")
                         {
                             System.out.println("hitChip");
                             if(isClient)
@@ -471,9 +491,15 @@ public class Network extends JFrame implements Runnable
                 }
                 if(gameStarted && roundOver)
                 {
-                    if(newRound.buttonClicked(e.getX(), e.getY()))
+                    if(newRound!=null&&newRound.buttonClicked(e.getX(), e.getY()))
                     {
                         newRound();
+                        if(!isClient)
+                        {
+                            beforeDeal=true;
+                            ServerHandler.sendReady();
+                            
+                        }
                     }
                 }
                 if(!gameStarted)
@@ -971,7 +997,7 @@ public class Network extends JFrame implements Runnable
         dBust=false;
         hitTime = false;
         betTime=false;
-        beforeDeal= true;
+        
         roundEnd= false;
         roundOver=false;
         thePot=0;
@@ -1006,6 +1032,7 @@ public class Network extends JFrame implements Runnable
     {
         return (ysize - getY(0) - YBORDER);
     }
+    
 
     // //////////////////////////////////////////////////////////////////////////
     public void init()
@@ -1076,13 +1103,13 @@ public class Network extends JFrame implements Runnable
         //g.drawString("HIT", getX(getWidth2()-100), getY(getHeight2()*15/16+45));
         
          standButton = new PokerButtons();
-        standButton.drawButton(g, getX(getWidth2()-105), getY(getHeight2()*12/16), 100, 50, button, "STAND");
+        standButton.drawButton(g, getX(getWidth2()-110), getY(getHeight2()*12/16)+10, 100, getHeight2()/8-15, button, "STAND");
         
          hitButton = new PokerButtons();
-        hitButton.drawButton(g, getX(getWidth2()-105), getY(getHeight2()*13/16), 100, 50, button, "HIT");
+        hitButton.drawButton(g, getX(getWidth2()-220), getY(getHeight2()*12/16)+10, 100, getHeight2()/4-20, button, "HIT");
         
          useButton = new PokerButtons();
-        useButton.drawButton(g, getX(getWidth2()-105), getY(getHeight2()*14/16), 100, 50, button, "USE");
+        useButton.drawButton(g, getX(getWidth2()-110), getY(getHeight2()*14/16+5), 100, getHeight2()/8-15, button, "USE");
         
 //        if(myTurn&&betTime)
 //        {
@@ -1152,74 +1179,86 @@ public class Network extends JFrame implements Runnable
                 bet.drawButton(g,getX(getWidth2()/2+85), 260, 50, 50, button, "BET");
                 int matchBet=(thePot-myBet*2)-myBetAmt;
                 if(matchBet>=james.getAmtMoney())
-                    chipOne = new Chips("All In");
+                    chipOne = new Chips("All In",james.getAmtMoney());
                 else
                     chipOne = new Chips(matchBet);
             }
             else
             chipOne= new Chips("Match");
-        
+            
+        chipOne.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipdark.png");       
         chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
         if(james.getAmtMoney()-myBetAmt>=chipFive.getValue())
         {
         chipFive = new Chips(5);
+        chipFive.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipteal.png");
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         }
         else
         {
         chipFive = new Chips("");
+        chipFive.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
         if(james.getAmtMoney()-myBetAmt>=chipTen.getValue())
         {
         chipTen = new Chips(10);
+        chipTen.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipblue.png");
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         }
         else
         {
         chipTen = new Chips("");
+        chipTen.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
+        
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
         if(james.getAmtMoney()-myBetAmt>=chipTwenty.getValue())
         {
         chipTwenty = new Chips(20);
+        chipTwenty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchip350.png");
         chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
         {
             chipTwenty = new Chips("");
+            chipTwenty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
             chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
             
         }
         if(james.getAmtMoney()-myBetAmt>=chipFifty.getValue())
         {
         chipFifty = new Chips(50);
+        chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchip300.png");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
         {
             chipFifty = new Chips("");
+            chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         if(james.getAmtMoney()-myBetAmt>=chipHundred.getValue())
         {
         chipHundred = new Chips(100);
+        chipHundred.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipred.png");
         chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
         {
             chipHundred = new Chips("");
+            chipHundred.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
             
                    
         //System.out.println(getY(getHeight2()*13/16));
-        g.setColor(button);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 36));
-        g.drawString(james.getName()+" Balance: "+james.getAmtMoney(), getX(5), getY(getHeight2()*3/4));
+        g.setColor(Color.white);
+        g.setFont(new Font("Futura", Font.ROMAN_BASELINE, 36));
+        g.drawString(james.getName()+" Balance: "+james.getAmtMoney(), getX(5), getY(getHeight2()*3/4-5));
         
         
         int index=0;
@@ -1232,20 +1271,23 @@ public class Network extends JFrame implements Runnable
                 
         temp.drawCard(g,300 + index,getY(getHeight2()*13/16),8,8,temp.getValue(),temp.getSuite(),isClient);
 
-            index+=65;
+            index+=130;
             }
         }        
         ////
-        g.setColor(button);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(goldfinger.getName(), getX(5), 200);
+        g.setColor(Color.white);
+        //g.drawLine(300, 0, 300, 800);
+        g.setFont(new Font("Futura", Font.ROMAN_BASELINE, 20));
+        g.drawString(goldfinger.getName(), getX(5), 150);
+        g.drawString("Balance: "+goldfinger.getAmtMoney(), getX(5), 170);
                         int index2=0;
+                        
 
         for(Card temp: goldfinger.hand)
         {
             if(temp!=null)
             {
-           temp.drawCard(g,getX(5) ,210+ index2,3,3,temp.getValue(),temp.getSuite(),roundOver);
+           temp.drawCard(g,getX(5) ,180+ index2,3,3,temp.getValue(),temp.getSuite(),roundOver);
             index2+=65;
             }
         }
@@ -1264,68 +1306,78 @@ public class Network extends JFrame implements Runnable
                 else
                     chipOne = new Chips(matchBet);
             }
-            else
-            chipOne= new Chips("Match");
-        
+            chipOne.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipdark.png");       
         chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
         if(goldfinger.getAmtMoney()-myBetAmt>=chipFive.getValue())
         {
         chipFive = new Chips(5);
+        chipFive.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipteal.png");
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         }
         else
         {
         chipFive = new Chips("");
+        chipFive.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
         if(goldfinger.getAmtMoney()-myBetAmt>=chipTen.getValue())
         {
         chipTen = new Chips(10);
+        chipTen.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipblue.png");
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         }
         else
         {
         chipTen = new Chips("");
+        chipTen.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
+        
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
         if(goldfinger.getAmtMoney()-myBetAmt>=chipTwenty.getValue())
         {
         chipTwenty = new Chips(20);
+        chipTwenty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgreen.png");
         chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
         {
             chipTwenty = new Chips("");
+            chipTwenty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
             chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
             
         }
         if(goldfinger.getAmtMoney()-myBetAmt>=chipFifty.getValue())
         {
         chipFifty = new Chips(50);
+        chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchiporange.png");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
         {
             chipFifty = new Chips("");
+            chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         if(goldfinger.getAmtMoney()-myBetAmt>=chipHundred.getValue())
         {
         chipHundred = new Chips(100);
+        chipHundred.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipred.png");
         chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
         {
             chipHundred = new Chips("");
+            chipHundred.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipHundred.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         
-            g.setColor(button);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(james.getName(),getX(5),200);
+            g.setColor(Color.white);
+        g.setFont(new Font("Futura", Font.ROMAN_BASELINE, 20));
+        g.drawString(james.getName(),getX(5),150);
+        g.drawString("Balance: "+james.getAmtMoney(), getX(5), 170);
         int index=0;
         for(Card temp: james.hand)
         {
@@ -1334,15 +1386,15 @@ public class Network extends JFrame implements Runnable
                         
 
                 
-        temp.drawCard(g,getX(5) ,210+ index,3,3,temp.getValue(),temp.getSuite(),roundOver);
+        temp.drawCard(g,getX(5) ,180+ index,3,3,temp.getValue(),temp.getSuite(),roundOver);
 
             index+=65;
             }
         }        
         ////
-        g.setColor(button);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 36));
-        g.drawString(goldfinger.getName()+" Balance: "+goldfinger.getAmtMoney(),getX(5), getY(getHeight2()*3/4));
+        g.setColor(Color.white);
+        g.setFont(new Font("Futura", Font.ROMAN_BASELINE, 36));
+        g.drawString(goldfinger.getName()+" Balance: "+goldfinger.getAmtMoney(),getX(5), getY(getHeight2()*3/4-5));
         int index2=0;
         for(Card temp: goldfinger.hand)
         {
@@ -1354,9 +1406,9 @@ public class Network extends JFrame implements Runnable
         }
         }
         ///////////Display Dealer////////////
-        g.setColor(button);
-        g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-        g.drawString(dealer.getName(),getX(getWidth2()-105),200);
+        g.setColor(Color.white);
+        g.setFont(new Font("Futura", Font.ROMAN_BASELINE, 20));
+        g.drawString(dealer.getName(),getX(getWidth2()-105),150);
         int index =0;
         for(Card temp: dealer.hand)
         {
@@ -1369,7 +1421,7 @@ public class Network extends JFrame implements Runnable
                         
 
                 
-        temp.drawCard(g,getX(getWidth2()-50) ,210+ index,3,3,temp.getValue(),temp.getSuite(),faceUp);
+        temp.drawCard(g,getX(getWidth2()-50) ,180+ index,3,3,temp.getValue(),temp.getSuite(),faceUp);
 
             index+=65;
             }
@@ -1391,7 +1443,7 @@ public class Network extends JFrame implements Runnable
             int xPos= (int) (getWidth2()/2-(fontMetrics.stringWidth("BLACKJACK")/2));
             g.drawString("BLACKJACK", getX(xPos), getY(getHeight2()/2));
             g.setColor(button);
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
+            g.setFont(new Font("Futura", Font.ROMAN_BASELINE, 20));
             if(beforeDeal)
             {
                 if(isClient)
@@ -1443,45 +1495,71 @@ public class Network extends JFrame implements Runnable
             }
             if(roundOver)
             {
+                if(james.getAmtMoney()>0&&goldfinger.getAmtMoney()>0)
+                {
                 g.drawString("Hit the new Round Button to start next round", getX(xPos), getY(getHeight2()/2)+40);                
                 newRound = new PokerButtons();
                 newRound.drawButton(g, getWidth2()/2-200, getHeight2()/2+100, 400, 100, Color.white, "New Round");
+                }
+                else
+                {
+                    if(isClient)
+                    {
+                        if(james.getAmtMoney()<=0)
+                        {
+                            g.drawString("You have no more money. Please leave the table.", getX(xPos), getY(getHeight2()/2)+40);
+                        }
+                        else
+                            g.drawString("Your opponent is out of money. Find a new one and play again.", getX(xPos), getY(getHeight2()/2)+60);
+                            
+                    }
+                    else
+                    {
+                        if(goldfinger.getAmtMoney()<=0)
+                        {
+                            g.drawString("You have no more money. Please leave the table.", getX(xPos), getY(getHeight2()/2)+40);
+                        }
+                        else
+                            g.drawString("Your opponent is out of money. Find a new one and play again.", getX(xPos), getY(getHeight2()/2)+60);
+                    }
+                }
             }
         //////////win/bust/////////
         g.setColor(Color.red);
         if(jWin)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.drawString("Bond Wins", 600, 200);
+            PokerButtons jW= new PokerButtons();
+            jW.drawTextButton(g, getX(getWidth2()/2-260), 260, 150, 50, button, "Bond Wins");
         }
         if(jBust)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.drawString("Bond Bust", 600, 250);
+            PokerButtons jB= new PokerButtons();
+            jB.drawTextButton(g, getX(getWidth2()/2-260), 260, 150, 50, button, "Bond Bust");
         }
         /////////////////////////////////////////////////////////        
         g.setColor(Color.red);
         if(gWin)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.drawString("Goldfinger Wins", 600, 220);
+            PokerButtons gW= new PokerButtons();
+            gW.drawTextButton(g, getX(getWidth2()/2-100), 260, 200, 50, button, "Goldfinger Wins");
         }
         if(gBust)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.drawString("Goldfinger Bust", 600, 270);
+            PokerButtons gB= new PokerButtons();
+            gB.drawTextButton(g, getX(getWidth2()/2-100), 260, 200, 50, button, "Goldfinger Bust");
         }
         /////////////////////////////////////////////////////////        
         g.setColor(Color.red);
         if(dWin)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.drawString("Dealer Wins", 600, 220);
+            PokerButtons dealerW= new PokerButtons();
+            dealerW.drawTextButton(g, getX(getWidth2()/2+110), 260, 150, 50, button, "Dealer Wins");
+                
         }
         if(dBust)
         {
-            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 20));
-            g.drawString("Dealer Bust", 600, 270);
+            PokerButtons dealerB= new PokerButtons();
+            dealerB.drawTextButton(g, getX(getWidth2()/2+110), 260, 150, 50, button, "Dealer Bust");
         }
         }
         /////////////////////////////////////////////////////////
@@ -1490,6 +1568,12 @@ public class Network extends JFrame implements Runnable
 //            g.setFont(new Font("Comic Sans", Font.ROMAN_BASELINE, 50));
 //            g.setColor(Color.white);
 //            g.drawString("Not Connected",getX(800),getY(600));
+//            PokerButtons jB= new PokerButtons();
+//            jB.drawTextButton(g, getX(getWidth2()/2-260), 260, 150, 50, Color.white, "Bond Bust");
+//            PokerButtons gW= new PokerButtons();
+//            gW.drawTextButton(g, getX(getWidth2()/2-100), 260, 200, 50, Color.white, "Goldfinger Wins");
+//            PokerButtons dealerB= new PokerButtons();
+//            dealerB.drawTextButton(g, getX(getWidth2()/2+110), 260, 150, 50, Color.white, "Dealer Bust");
             
         }
         else if (isClient)
@@ -1589,6 +1673,8 @@ public class Network extends JFrame implements Runnable
                 xsize = getSize().width;
                 ysize = getSize().height;
             }
+                        
+            
 
             reset();
         }
@@ -1717,4 +1803,45 @@ public class Network extends JFrame implements Runnable
         }
         relaxer = null;
     }
+    
 }
+class sound implements Runnable {
+    Thread myThread;
+    File soundFile;
+    public boolean donePlaying = false;
+    sound(String _name)
+    {
+        soundFile = new File(_name);
+        myThread = new Thread(this);
+        myThread.start();
+    }
+    public void run()
+    {
+        try {
+        AudioInputStream ais = AudioSystem.getAudioInputStream(soundFile);
+        AudioFormat format = ais.getFormat();
+    //    System.out.println("Format: " + format);
+        DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+        SourceDataLine source = (SourceDataLine) AudioSystem.getLine(info);
+        source.open(format);
+        source.start();
+        int read = 0;
+        byte[] audioData = new byte[16384];
+        while (read > -1){
+            read = ais.read(audioData,0,audioData.length);
+            if (read >= 0) {
+                source.write(audioData,0,read);
+            }
+        }
+        donePlaying = true;
+
+        source.drain();
+        source.close();
+        }
+        catch (Exception exc) {
+            System.out.println("error: " + exc.getMessage());
+            exc.printStackTrace();
+        }
+    }
+}
+

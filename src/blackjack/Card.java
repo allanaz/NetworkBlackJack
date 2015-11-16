@@ -227,7 +227,7 @@ public class Card {
         }
         else
         {
-            g.setColor(Color.red);
+            g.setColor(new Color(217,197,137));
             g.fillRoundRect(0, 0, 15, 20,2,2);
         }
             

@@ -53,6 +53,19 @@ public class Player {
             System.out.println(temp);
         }
     }
+    public void removeSpecialCard()
+    {
+        Card remove=null;
+        for(Card temp:hand)
+        {
+            if(temp.getSuite()==Card.Suite.SPECIAL)
+            {
+                remove=temp;
+            }
+        }
+        if(hand.contains(remove))
+            hand.remove(remove);
+    }
     public void dealMeIn()
     {
         int numPlayed=0;
@@ -138,6 +151,7 @@ public class Player {
     public int getHandValue()
     {
         int handValue=0;
+        int numAces=0;
         for(Card temp:hand)
         {
             if(temp.getSuite()!=Card.Suite.SPECIAL)
@@ -148,12 +162,16 @@ public class Player {
                 handValue+=temp.getValue();
             else
             {
-                if(handValue+11>21)
-                    handValue+=1;
-                else
-                    handValue+=11;
+                numAces++;
             }
             }
+        }
+        for(int i =0;i<numAces;i++)
+        {
+            if(handValue+11>21)
+                handValue+=1;
+            else
+                handValue+=11;
         }
         return handValue;
     }

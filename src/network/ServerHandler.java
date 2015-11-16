@@ -64,7 +64,15 @@ public class ServerHandler
     {
         if(connected)
         {
-            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1+":"+-1+":"+-1);
+            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1+":"+-1+":"+-1+":"+-1);
+            Network.myTurn=false;
+        }
+    }
+    public static void sendReady()
+    {
+        if(connected)
+        {
+            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + -1+":"+-1+":"+-1+":"+-1);
             Network.myTurn=false;
         }
     }
@@ -74,7 +82,7 @@ public class ServerHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1+":"+-1+":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1+":"+-1+":"+-1+":"+-1 );
 			//Network.myTurn = false;
 		}        
     }
@@ -84,7 +92,7 @@ public class ServerHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1+":"+-1+":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1+":"+-1+":"+-1+":"+-1 );
 			Network.myTurn = false;
 		}        
     }
@@ -94,7 +102,7 @@ public class ServerHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1);
+                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -103,7 +111,7 @@ public class ServerHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -112,16 +120,16 @@ public class ServerHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
-    public static void sendMoneyEffect(int val,int val2)
+    public static void sendMoneyEffect(int val,int val2,int val3)
     {
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(-1 + ":" + -1 + ":" + 1 + ":" + -1+":"+-1+":"+val+":"+val2);
+			serverOut.println(-1 + ":" + -1 + ":" + 1 + ":" + -1+":"+-1+":"+val+":"+val2+":"+val3);
 			//Network.myTurn = false;
 		}        
     }
@@ -130,7 +138,7 @@ public class ServerHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1+":"+-1+":"+-1+":"+-1);
 			Network.myTurn = false;
 		}        
     }
@@ -209,6 +217,8 @@ public class ServerHandler
                             int vpost = Integer.parseInt(inputLine.split(":")[4]);
                             int upost = Integer.parseInt(inputLine.split(":")[5]);
                             int tpost = Integer.parseInt(inputLine.split(":")[6]);
+                            int spost = Integer.parseInt(inputLine.split(":")[7]);
+                            
                             
                             if(ypost!=-1)
                             {
@@ -264,7 +274,8 @@ public class ServerHandler
                             {
                                 if(wpost!=-1)
                                 {
-                                Network.thePot=wpost;
+                                Network.thePot+=wpost;
+                                Network.james.setAmtMoney(Network.james.getAmtMoney()-wpost);
                                 if(Network.thePot==2*Network.myBet)
                                 Network.myTurn = false;
                                 else 
@@ -281,10 +292,17 @@ public class ServerHandler
                                     {
                                         Network.james.setAmtMoney(upost);
                                         Network.goldfinger.setAmtMoney(tpost);
+                                        for(int i=0;i<spost;i++)
+                                        Network.james.removeSpecialCard();
                                     }
-                                    else
+                                    if(vpost!=-1)
+                                    {
+                                        Network.james.setStanding(true);
                                     Network.myTurn = true;
+                                    }
+                                    
                                 }
+                                
                             }
                             
                             

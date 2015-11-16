@@ -85,7 +85,7 @@ public class ClientHandler
     {
         if(connected)
         {
-            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1+":"+-1+":"+-1);
+            serverOut.println(-1 + ":" + -1 + ":" + -1 +":"+-1 + ":" + 1+":"+-1+":"+-1+":"+-1);
             Network.myTurn=false;
         }
     }
@@ -93,7 +93,7 @@ public class ClientHandler
     {
         if(connected)
         {
-            serverOut.println(-1 + ":" + -1 + ":" + 0 +":"+-1 + ":" + 1+":"+-1+":"+-1);
+            serverOut.println(-1 + ":" + -1 + ":" + 0 +":"+-1 + ":" + 1+":"+-1+":"+-1+":"+-1);
         }
     }
     public static void sendHit(int val)
@@ -102,7 +102,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1+":"+-1+":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 2 +":"+-1+":"+-1+":"+-1+":"+-1+":"+-1 );
 			//Network.myTurn = false;
 		}        
     }
@@ -112,7 +112,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1+":"+-1+":"+-1 );
+                    serverOut.println(val + ":" + -1 + ":" + 0 +":"+-1+":"+-1+":"+-1+":"+-1 +":"+-1);
 			//Network.myTurn = false;
 		}        
     }
@@ -122,7 +122,7 @@ public class ClientHandler
 		{
 //add or modify.                    
 			//serverOut.println(-1 + ":" + val + ":" + 0);
-                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1);
+                        serverOut.println(-1  + ":" + -1 + ":" + -1 + ":" + val+":"+-1+":"+-1+":"+-1+":"+-1);
                         if(Network.thePot==2*Network.myBet)
 			Network.myTurn = true;
                         else
@@ -134,7 +134,7 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 2 + ":" + -1+":"+-1+":"+-1+":"+-1+":"+-1);
 			//Network.myTurn = false;
 		}        
     }
@@ -143,7 +143,7 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 0 + ":" + -1+":"+-1+":"+-1+":"+-1+":"+-1);
 			//Network.myTurn = false;
 		}        
     }
@@ -152,16 +152,16 @@ public class ClientHandler
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1+":"+-1+":"+-1);
+			serverOut.println(val + ":" + val2 + ":" + 1 + ":" + -1+":"+-1+":"+-1+":"+-1+":"+-1);
 			//Network.myTurn = false;
 		}        
     }
-    public static void sendMoneyEffect(int val,int val2)
+    public static void sendMoneyEffect(int val,int val2,int val3)
     {
 		if (connected)
 		{
 //add or modify.                    
-			serverOut.println(-1 + ":" + -1 + ":" + 1 + ":" + -1+":"+-1+":"+val+":"+val2);
+			serverOut.println(-1 + ":" + -1 + ":" + 1 + ":" + -1+":"+-1+":"+val+":"+val2+":"+val3);
 			//Network.myTurn = false;
 		}        
     }
@@ -222,6 +222,8 @@ public class ClientHandler
                                                         int vpost = Integer.parseInt(inputLine.split(":")[4]);
                                                         int upost = Integer.parseInt(inputLine.split(":")[5]);
                                                         int tpost = Integer.parseInt(inputLine.split(":")[6]);
+                                                        int spost = Integer.parseInt(inputLine.split(":")[7]);
+                                                        
                                                         
                                                         if(ypost!=-1)
                                                         {
@@ -275,15 +277,23 @@ public class ClientHandler
                                                         {
                                                             if(wpost!=-1)
                                                             {
-                                                            Network.thePot=wpost;
+                                                            Network.thePot+=wpost;
+                                                            Network.goldfinger.setAmtMoney(Network.goldfinger.getAmtMoney()-wpost);
                                                             Network.myTurn = true;
                                                             }
                                                             if(wpost==-1)
                                                             {
+                                                                if(upost==-1&&vpost==-1&&tpost==-1&&spost==-1)
+                                                                {
+                                                                    Network.beforeDeal=true;
+                                                                    return;
+                                                                }
                                                                 if(upost!=-1)
                                                                 {
                                                                     Network.goldfinger.setAmtMoney(upost);
                                                                     Network.james.setAmtMoney(tpost);
+                                                                    for(int i=0;i<spost;i++)
+                                                                    Network.goldfinger.removeSpecialCard();
                                                                 }
                                                                 else
                                                                 {
