@@ -35,8 +35,8 @@ public class Network extends JFrame implements Runnable
 
     public static Graphics2D g;
     /////////////////////////////////////////////////////////
-    static Player james=new Player("James Bond",200);
-    static Player goldfinger = new Player("Goldfinger",500);
+    static Player james=new Player("James Bond",300);
+    static Player goldfinger = new Player("Goldfinger",300);
     static Player dealer = new Player("Dealer Yee",1000);
     static boolean gWin=false;
     static boolean jWin =false;
@@ -1232,7 +1232,7 @@ public class Network extends JFrame implements Runnable
         if(james.getAmtMoney()-myBetAmt>=chipFifty.getValue())
         {
         chipFifty = new Chips(50);
-        chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchip300.png");
+        chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgreen.png");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
         else
@@ -1269,7 +1269,7 @@ public class Network extends JFrame implements Runnable
                         
 
                 
-        temp.drawCard(g,300 + index,getY(getHeight2()*13/16),8,8,temp.getValue(),temp.getSuite(),isClient);
+        temp.drawCard(g,getWidth2()/2 + index,getY(getHeight2()*13/16),8,8,temp.getValue(),temp.getSuite(),isClient);
 
             index+=130;
             }
@@ -1400,8 +1400,8 @@ public class Network extends JFrame implements Runnable
         {
             if(temp!=null)
             {
-           temp.drawCard(g,300 + index2,getY(getHeight2()*13/16),5,5,temp.getValue(),temp.getSuite(),!isClient);
-            index2+=65;
+           temp.drawCard(g,getWidth2()/2 + index2,getY(getHeight2()*13/16),8,8,temp.getValue(),temp.getSuite(),!isClient);
+            index2+=130;
             }
         }
         }
