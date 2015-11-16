@@ -278,17 +278,19 @@ public class ClientHandler
                                                             if(wpost!=-1)
                                                             {
                                                             Network.thePot+=wpost;
+                                                            System.out.println("set pot");
                                                             Network.goldfinger.setAmtMoney(Network.goldfinger.getAmtMoney()-wpost);
                                                             Network.myTurn = true;
                                                             }
                                                             if(wpost==-1)
                                                             {
+                                                                
                                                                 if(upost==-1&&vpost==-1&&tpost==-1&&spost==-1)
                                                                 {
                                                                     Network.beforeDeal=true;
-                                                                    return;
+                                                                    
                                                                 }
-                                                                if(upost!=-1)
+                                                                else if(upost!=-1)
                                                                 {
                                                                     Network.goldfinger.setAmtMoney(upost);
                                                                     Network.james.setAmtMoney(tpost);

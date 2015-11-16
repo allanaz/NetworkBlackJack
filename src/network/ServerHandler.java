@@ -224,6 +224,7 @@ public class ServerHandler
                             {
                                 if(xpost!=-1)
                                 {
+                                    Network.deal = new sound("cardFan1.wav");
                                     if(zpost==0)
                                     {
                                         Network.dealer.hand.add(Card.cards[ypost]);

@@ -24,7 +24,7 @@ public class Network extends JFrame implements Runnable
     public static final int XBORDER = 20;
     public static final int YBORDER = 20;
     public static final int YTITLE = 25;
-    public static final int WINDOW_WIDTH = 1920/2;
+    public static final int WINDOW_WIDTH = 1920;
     public static final int WINDOW_HEIGHT = 1045;
     final public static int NUM_ROWS = 8;
     final public static int NUM_COLUMNS = 8;
@@ -55,6 +55,9 @@ public class Network extends JFrame implements Runnable
     public static int myBetAmt=0;
     
     sound bondTheme = new sound("JamesBond.wav");
+    static sound deal;
+    static sound chipClick;
+    static sound cardHit;
     
     PokerButtons connectServer;
     PokerButtons connectClient;
@@ -64,6 +67,7 @@ public class Network extends JFrame implements Runnable
     PokerButtons start;
     PokerButtons newRound;
     PokerButtons bet;
+    PokerButtons rules;
     
     PokerButtons pot;
     PokerButtons subBet;
@@ -139,6 +143,7 @@ public class Network extends JFrame implements Runnable
                     if(hitButton.buttonClicked(xpos, ypos))                        
                     {
                         System.out.println("hitBox");
+                        cardHit = new sound("cardPlace1.wav");
                         if(isClient&&hitTime)
                         {
                             int hitCardIndex=0;
@@ -200,6 +205,7 @@ public class Network extends JFrame implements Runnable
                     {
                         if(!james.getInGame())
                         {
+                            deal = new sound("cardFan1.wav");
                         int hitCardIndex=0;
                         int hitCardIndex2=0;
 //                                                james.dealMeIn();
@@ -250,8 +256,9 @@ public class Network extends JFrame implements Runnable
                                 myBet+=myBetAmt;
                                 thePot+=myBetAmt;
                                 
-                                System.out.println("sending from server");
+                                
                                 ServerHandler.sendBet(myBetAmt); 
+                                System.out.println("sending from server");
                                 goldfinger.setAmtMoney(goldfinger.getAmtMoney()-myBetAmt);
                                 myBetAmt=0;
                             }
@@ -260,6 +267,7 @@ public class Network extends JFrame implements Runnable
                         if(chipOne.buttonClicked(xpos, ypos))
                         {
                             System.out.println("hitChip");
+                            chipClick = new sound("chipsCollide3.wav");
                             if(isClient)
                             {
                                 
@@ -296,6 +304,7 @@ public class Network extends JFrame implements Runnable
                         if(chipFive.buttonClicked(xpos, ypos)&&chipFive.getLabel()!="")
                         {
                             System.out.println("hitChip");
+                            chipClick = new sound("chipsCollide3.wav");
                             if(isClient)
                             {
 //                                thePot+=chipFive.getValue();
@@ -344,6 +353,7 @@ public class Network extends JFrame implements Runnable
                         if(chipTen.buttonClicked(xpos, ypos)&&chipTen.getLabel()!="")
                         {
                             System.out.println("hitChip");
+                            chipClick = new sound("chipsCollide3.wav");
                             if(isClient)
                             {
                                 myBetAmt+=chipTen.getValue();
@@ -380,6 +390,7 @@ public class Network extends JFrame implements Runnable
                         if(chipTwenty.buttonClicked(xpos, ypos)&&chipTwenty.getLabel()!="")
                         {
                             System.out.println("hitChip");
+                            chipClick = new sound("chipsCollide3.wav");
                             if(isClient)
                             {
                                 myBetAmt+=chipTwenty.getValue();
@@ -415,6 +426,7 @@ public class Network extends JFrame implements Runnable
                         if(chipFifty.buttonClicked(xpos, ypos)&&chipFifty.getLabel()!="")
                         {
                             System.out.println("hitChip");
+                            chipClick = new sound("chipsCollide3.wav");
                             if(isClient)
                             {
                                 myBetAmt+=chipFifty.getValue();
@@ -450,6 +462,7 @@ public class Network extends JFrame implements Runnable
                         if(chipHundred.buttonClicked(xpos, ypos)&&chipHundred.getLabel()!="")
                         {
                             System.out.println("hitChip");
+                            chipClick = new sound("chipsCollide3.wav");
                             if(isClient)
                             {
                                 myBetAmt+=chipHundred.getValue();
@@ -559,6 +572,13 @@ public class Network extends JFrame implements Runnable
                     }
                 
                 }
+                if(rules.buttonClicked(e.getX(), e.getY()))
+                {
+                    if(!showRules)
+                    showRules=true;
+                    else
+                        showRules=false;
+                }
                 if(e.BUTTON3==e.getButton())
                 {
                     
@@ -664,13 +684,13 @@ public class Network extends JFrame implements Runnable
 //                                                }
 //                                                
 //                                            }
-                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
-                                            {
-                                                thePot+=2;
-                                                myBet+=2;
-                                                System.out.println("sending from client");
-                                                ClientHandler.sendBet(thePot);                                               
-                                            }
+//                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
+//                                            {
+//                                                thePot+=2;
+//                                                myBet+=2;
+//                                                System.out.println("sending from client");
+//                                                ClientHandler.sendBet(thePot);                                               
+//                                            }
                                     
                                         
                                 }
@@ -714,14 +734,14 @@ public class Network extends JFrame implements Runnable
 //                                                }
 //                                                
 //                                            }
-                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
-                                            {
-                                                thePot+=2;
-                                                myBet+=2;
-                                                System.out.println("sending from server");
-                                                //ServerHandler.sendPieceMove(-3,thePot);
-                                                ServerHandler.sendBet(thePot);
-                                            }
+//                                            if(e.getKeyCode()==KeyEvent.VK_B&&betTime)
+//                                            {
+//                                                thePot+=2;
+//                                                myBet+=2;
+//                                                System.out.println("sending from server");
+//                                                //ServerHandler.sendPieceMove(-3,thePot);
+//                                                ServerHandler.sendBet(thePot);
+//                                            }
                                     
                                         
                                 }
@@ -851,7 +871,7 @@ public class Network extends JFrame implements Runnable
                         {
                             ipAddress += ".";
                         }
-                        else if (e.getKeyCode() == KeyEvent.VK_Q)
+                        else if (e.getKeyCode() == KeyEvent.VK_BACK_SPACE)
                         {
                             ipAddress = ipAddress.substring(0,ipAddress.length()-1);
                         }
@@ -948,8 +968,8 @@ public class Network extends JFrame implements Runnable
         frame.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setVisible(true);
-        frame.setTitle("Network");
-        frame.setResizable(true);
+        frame.setTitle("BlackJack");
+        frame.setResizable(false);
     }
 
     /**
@@ -1189,7 +1209,7 @@ public class Network extends JFrame implements Runnable
         chipOne.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipdark.png");       
         chipOne.drawButton(g, getX(0), getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
         
-        if(james.getAmtMoney()-myBetAmt>=chipFive.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipFive.getValue()&&goldfinger.getAmtMoney()>=chipFive.getValue())
         {
         chipFive = new Chips(5);
         chipFive.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipteal.png");
@@ -1202,7 +1222,7 @@ public class Network extends JFrame implements Runnable
         chipFive.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
-        if(james.getAmtMoney()-myBetAmt>=chipTen.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipTen.getValue()&&goldfinger.getAmtMoney()>=chipTen.getValue())
         {
         chipTen = new Chips(10);
         chipTen.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipblue.png");
@@ -1216,7 +1236,7 @@ public class Network extends JFrame implements Runnable
         chipTen.drawButton(g, getX(0)+getHeight2()/4, getY(getHeight2()*3/4), getHeight2()/8, Color.lightGray);
             
         }
-        if(james.getAmtMoney()-myBetAmt>=chipTwenty.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipTwenty.getValue()&&goldfinger.getAmtMoney()>=chipTwenty.getValue())
         {
         chipTwenty = new Chips(20);
         chipTwenty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchip350.png");
@@ -1229,7 +1249,7 @@ public class Network extends JFrame implements Runnable
             chipTwenty.drawButton(g, getX(0), getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
             
         }
-        if(james.getAmtMoney()-myBetAmt>=chipFifty.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipFifty.getValue()&&goldfinger.getAmtMoney()>=chipFifty.getValue())
         {
         chipFifty = new Chips(50);
         chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgreen.png");
@@ -1241,7 +1261,7 @@ public class Network extends JFrame implements Runnable
             chipFifty.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipgray.png");
         chipFifty.drawButton(g, getX(0)+getHeight2()/8, getY(getHeight2()*7/8), getHeight2()/8, Color.lightGray);
         }
-        if(james.getAmtMoney()-myBetAmt>=chipHundred.getValue())
+        if(james.getAmtMoney()-myBetAmt>=chipHundred.getValue()&&goldfinger.getAmtMoney()>=chipHundred.getValue())
         {
         chipHundred = new Chips(100);
         chipHundred.chipPic = Toolkit.getDefaultToolkit().getImage("./pokerchipred.png");
@@ -1479,7 +1499,7 @@ public class Network extends JFrame implements Runnable
                 if(isClient)
                 {
                     if(!james.getStanding())
-                        g.drawString("Hit until you want to stop. Then click the Stand Button", getX(xPos), getY(getHeight2()/2)+40);
+                        g.drawString("Hit until you want to stop. Then click the Stand Button. To use a joker, click use.", getX(xPos), getY(getHeight2()/2)+40);
                     if(james.getStanding())
                         g.drawString("Other player hitting...", getX(xPos), getY(getHeight2()/2)+40);
                 }
@@ -1488,14 +1508,14 @@ public class Network extends JFrame implements Runnable
                     if(!james.getStanding())
                         g.drawString("Other player hitting...", getX(xPos), getY(getHeight2()/2)+40);
                     else if(!goldfinger.getStanding())
-                        g.drawString("Hit until you want to stop. Then click the Stand Button", getX(xPos), getY(getHeight2()/2)+40);
+                        g.drawString("Hit until you want to stop. Then click the Stand Button. To use a joker, click use.", getX(xPos), getY(getHeight2()/2)+40);
                     
                         
                 }
             }
             if(roundOver)
             {
-                if(james.getAmtMoney()>0&&goldfinger.getAmtMoney()>0)
+                if(james.getAmtMoney()>0&&goldfinger.getAmtMoney()>0&&beforeDeal)
                 {
                 g.drawString("Hit the new Round Button to start next round", getX(xPos), getY(getHeight2()/2)+40);                
                 newRound = new PokerButtons();
@@ -1634,6 +1654,39 @@ public class Network extends JFrame implements Runnable
              connectClient = new PokerButtons();
             connectClient.drawButton(g, getWidth2()/2-200, getHeight2()/2+225, 400, 100, Color.white, "Play As Client");
         }
+        rules = new PokerButtons();
+        rules.drawButton(g, getX(getWidth2()-100), getY(5), 100, 50,new Color(217,197,137) , "Rules");
+        if(showRules==true)
+    	{
+        	g.setColor(Color.white);
+       	g.fillRect(getX(getWidth2()/3-3),getY(0),getWidth2()/3,getHeight2()/2-25);
+       	
+       	g.setColor(background);
+    	g.setFont(new Font("Impact",Font.BOLD,50));
+    	
+    	g.drawString("Blackjack", getX(getWidth2()/3+170),getY(40));
+    	
+    	g.setFont(new Font("Impact",Font.BOLD,20));
+     	
+    	g.drawString("1.Each player will start out with $300.", getX(getWidth2()/3),getY(65));
+    	g.drawString("2.At the start of each round each player is given 2 random cards. ", getX(getWidth2()/3),getY(90));
+    	g.drawString("3.The players will bet till the bets match before they can hit.", getX(getWidth2()/3),getY(115));
+    	g.drawString("4.The player will add the values of the cards. The value is the number", getX(getWidth2()/3),getY(140));
+    	g.drawString("indicated on the card. The king, queen, jack cards are are all worth", getX(getWidth2()/3),getY(165));
+    	g.drawString("10 points and the ace is worth 11 or 1 points.", getX(getWidth2()/3),getY(190));
+    	g.drawString("5.To win the round you want to be as close to 21 without going over", getX(getWidth2()/3),getY(215));
+    	g.drawString("6.On your turn you can choose to get another card which will add the ", getX(getWidth2()/3),getY(240));
+    	g.drawString("corresponding amount of points. You can keep adding cards until your ", getX(getWidth2()/3),getY(265));
+    	g.drawString("turn is over, get to 21 or you decide to stand.", getX(getWidth2()/3),getY(290));
+    	g.drawString("7.There are special cards that you can do which will help you/harm ", getX(getWidth2()/3),getY(315));
+    	g.drawString("the other player or will help the other player.(click use)", getX(getWidth2()/3),getY(340));
+    	g.drawString("8.Who ever is the closest to 21 without going over wins all", getX(getWidth2()/3),getY(365));
+    	g.drawString("the other players bets.", getX(getWidth2()/3),getY(390));
+        g.drawString("9.If there is a tie the dealer gets the money", getX(getWidth2()/3),getY(415));
+    	g.drawString("10.To win you have to have the most money out of all the players.", getX(getWidth2()/3),getY(440));
+        g.drawString("Press the space bar to hide or show this menu", getX(getWidth2()/3),getY(465));
+    	
+    	}
                     
         // put all paint commands above this line
         gOld.drawImage(image, 0, 0, null);
@@ -1677,6 +1730,10 @@ public class Network extends JFrame implements Runnable
             
 
             reset();
+        }
+        if(bondTheme.donePlaying)
+        {
+            bondTheme = new sound("JamesBond.wav");
         }
         if(betTime&&thePot==2*myBet&&thePot>0)
         {
@@ -1740,9 +1797,9 @@ public class Network extends JFrame implements Runnable
             
             if(dealer.getHandValue()<21&&(dealer.getHandValue()>james.getHandValue()||jBust)&&(dealer.getHandValue()>goldfinger.getHandValue()||gBust))
                 dWin=true;
-            else if(james.getHandValue()<21&&(james.getHandValue()>dealer.getHandValue()||dBust)&&(james.getHandValue()>goldfinger.getHandValue()||gBust))
+             if(james.getHandValue()<21&&(james.getHandValue()>dealer.getHandValue()||dBust)&&(james.getHandValue()>goldfinger.getHandValue()||gBust))
                 jWin=true;
-            else if(goldfinger.getHandValue()<21&&(goldfinger.getHandValue()>james.getHandValue()||jBust)&&(goldfinger.getHandValue()>dealer.getHandValue()||dBust))
+             if(goldfinger.getHandValue()<21&&(goldfinger.getHandValue()>james.getHandValue()||jBust)&&(goldfinger.getHandValue()>dealer.getHandValue()||dBust))
                 gWin=true;
         }
         
